@@ -108,6 +108,8 @@ void close_all_files()
         fclose(open_file_list[i]);
         free(buffer_list[i]);
     }
+
+    free(buffer_list);
 }
 
 
@@ -132,14 +134,27 @@ void close_all_files()
 // Update File
 // call when trap for saving is activated
 // take active buffer and write it to file
+//    index buffer list with current buffer number
 // if file does not exist then create it 
+
+// Change Buffer
+// switch to a new buffer
+// given a name search the buffer list for the new buffer
+// if the name does not exist then create a new buffer structure with that name 
+//    and allocate it an empty buffer
 
 // Shutdown 
 // on exit
-// close all open files
 // free all allocated buffers
+// free buffer list
 
 // Switch current buffer
 // search files for correct name 
 // update buffer number
 // create new buffer on unrecognized name
+
+// create structure for maintaining buffers
+// contains char*, file name 
+// we are going to switch to opening and closing files immediately after use
+// example open, read, close or open, write, close not open, lots of stuff, close
+// should change close_files to dealloc_all_buffers
