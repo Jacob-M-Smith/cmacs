@@ -2,6 +2,12 @@
 #define CMACS_H
 
 void open_file(char*);
-void close_all_files();
+void dealloc_all_buffers();
+
+typedef struct buffer_info
+{
+    char* buffer;
+    char* fname;
+} buffer_info;
 
 #endif
