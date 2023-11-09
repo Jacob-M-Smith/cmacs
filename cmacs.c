@@ -54,7 +54,7 @@ void open_file(char* fname)
         exit(0);
     }
 
-    printf("horseshit");
+/*    printf("horseshit");
 
     struct stat stat_buffer;
     if (stat(fname, &stat_buffer) == -1)
@@ -99,7 +99,7 @@ void open_file(char* fname)
    buffer_list[buffer_list_size]->buffer = buffer;
    buffer_list[buffer_list_size]->fname = fname;
    current_buffer = buffer_list_size;
-   buffer_list_size++;
+   buffer_list_size++;*/
 
 }
 
