@@ -25,10 +25,10 @@ int main (int argc, char** argv)
     while(1)
     {
         int key = getch();
-        if (key == 10)
+        if (key == 10)                                       // Replace this key with the short cut to save.
         {
             printf("write to file here");
-            break;
+            break;                                          // Once we have shortcuts working this can be removed. We need to setup proper exiting.
         }
     }
     
@@ -127,40 +127,20 @@ void update_file()
 }
 
 
+// TODO
 
-// FUNCTION RESPONSIBILITIES
-
-// Main
-// handle curses
-// make scr editable
-// save edits to buffer
-// render a text cursor
-// traps for keyboard shortcuts
-// handle command line args
-
-// Get New Buffer
-// open a file descriptor
-// read its text and store it in a new buffer 
-// add the file pointer to a list of file pointers to close later
-// add a pointer to the file to the list of pointers to files to close later
-// changes current buffer
-
-// Update File
-// call when trap for saving is activated
-// take active buffer and write it to file
-//    index buffer list with current buffer number
-// if file does not exist then create it 
+// Save screen contents to files associated buffer.
+// Handle more complex keyboard inputs (shortcuts, arrows, sigactions).
+// Include a shortcut to add new files and change buffers (still need to test).
+// Render a text cursor (currently invisible).
+// How do we handle when the contents of the screen is larger than the size of the buffer?
+// write function to change buffer
 
 // Change Buffer
 // switch to a new buffer
 // given a name search the buffer list for the new buffer
 // update buffer number
 // create new buffer on unrecognized name
-
-// Shutdown 
-// on exit
-// free all allocated buffers
-// free buffer list
 
 // NOTE
 // seg faults are most likely to occur in open_file
