@@ -3,6 +3,7 @@
 
 void open_file(char*);
 void dealloc_all_buffers();
+void update_file();
 
 typedef struct buffer_info
 {
