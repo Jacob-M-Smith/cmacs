@@ -47,7 +47,7 @@ void open_file(char* fname)
     FILE* fd;
     off_t file_size;
 
-    fd = fopen(fname, "r");
+    fd = fopen(fname, "a+");       // append + should open or create
 
     if (fd == NULL)
     {
