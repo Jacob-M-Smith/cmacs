@@ -3,8 +3,9 @@
 
 typedef struct buffer
 {
-    char* fname;
+    char* fname;  
     int   pos;
+    char* end_ptr;   // points to end of text buffer
     char* text;
 } buffer;
 
