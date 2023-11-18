@@ -1,14 +1,20 @@
 #ifndef CMACS_H
 #define CMACS_H
 
-void open_file(char*);
-void dealloc_all_buffers();
-void update_file();
-
-typedef struct buffer_info
+typedef struct buffer
 {
-    char* buffer;
     char* fname;
-} buffer_info;
+    int   pos;
+    char* text;
+} buffer;
+
+void     open_file(char*);
+void     dealloc_all_buffers();
+void     update_file();
+int      add_char_to_buffer(buffer*, char);
+int      process_keystroke(buffer*, int);
+int      linear_coordinate_translator(int, int, int);
+void*    end_ptr_calculator(void*, int, int);
+
 
 #endif
