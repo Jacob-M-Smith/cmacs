@@ -45,3 +45,21 @@ int process_keystroke(buffer* buf, int key)
     // Adding the character is the default option. We need to add cases for hotkeys and other special keys.
     // Backspace could utilize memmove?
 }
+
+// Calculates the index for the buffer from the x and y coordinates of the window's cursor.
+int linear_coordinate_translator(int x, int y, int x_max)
+{  
+    return (x_max * y) + x;
+}
+
+
+// TODO
+
+// Handle control keys in process_keystroke.
+// Movement strokes with wmove
+
+// Function to change buffers
+// Adjust current buffer number.
+// Create a new buffer if necessary.
+
+// Linear translation function.
