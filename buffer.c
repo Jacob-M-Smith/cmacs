@@ -46,6 +46,12 @@ int process_keystroke(buffer* buf, int key)
     // Backspace could utilize memmove?
 }
 
+// Calculates the index for the buffer from the x and y coordinates of the window's cursor.
+int linear_coordinate_translator(int x, int y, int x_max)
+{  
+    return (x_max * y) + x;
+}
+
 // Uses a pointer and the amount of memory allocated to determine where the allocated memory ends.
 // Used for determining when to reallocate a pointer to a char. (Does the new write occur past buffer's end?)
 void* calculate_end_ptr(void* ptr, int size, int type_size)
