@@ -8,8 +8,7 @@
 int add_char_to_buffer(buffer* buf, char character)
 {
     int new_buffer_size = strlen(buf->text) + 1;
-//    int pos = buf->pos;
-    int pos = new_buffer_size; // For testing only.
+    int pos = buf->pos;
 
     size_t memory_size = malloc_usable_size(buf->text);
     size_t buffer_memory_consumed = new_buffer_size * sizeof(char);           // We include the + 1 because we will be adding a char.
@@ -50,13 +49,6 @@ int process_keystroke(buffer* buf, int key)
 int linear_coordinate_translator(int x, int y, int x_max)
 {  
     return (x_max * y) + x;
-}
-
-// Uses a pointer and the amount of memory allocated to determine where the allocated memory ends.
-// Used for determining when to reallocate a pointer to a char. (Does the new write occur past buffer's end?)
-void* calculate_end_ptr(void* ptr, int size, int type_size)
-{
-    return ptr + (size * type_size);
 }
 
 // TODO
