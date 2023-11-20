@@ -5,7 +5,7 @@ typedef struct buffer
 {
     char* fname;  
     int   pos;
-    char* end_ptr;   // points to end of text buffer
+    uint  size;           // amount of memory allocated to the buffer
     char* text;
 } buffer;
 
@@ -15,7 +15,7 @@ void     update_file();
 int      add_char_to_buffer(buffer*, char);
 int      process_keystroke(buffer*, int);
 int      linear_coordinate_translator(int, int, int);
-void*    end_ptr_calculator(void*, int, int);
+void*    calculate_end_ptr(void*, int, int);
 
 
 #endif
