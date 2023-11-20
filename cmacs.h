@@ -1,6 +1,8 @@
 #ifndef CMACS_H
 #define CMACS_H
 
+#define CTRL(x) ((x) & 0x1f)
+
 typedef struct buffer
 {
     char* fname;  
