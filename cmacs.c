@@ -6,7 +6,7 @@
 #include <string.h>
 #include "cmacs.h"
 
-buffer_info** buffer_list;
+buffer** buffer_list;
 uint buffer_list_size = 0;
 uint current_buffer = 0;
 
@@ -18,18 +18,38 @@ int main (int argc, char** argv)
     // screen loop goes here
 
     initscr();
-    addstr(buffer_list[current_buffer]->buffer);
+
+    int ty, tx, by, bx;
+    int y, x;
+
+    getbegyx(stdscr, by, bx);
+    getmaxyx(stdscr, ty, tx);
+
+    WINDOW* win = newwin(by, bx, ty, tx);
+
+    printw(buffer_list[current_buffer]->text);
 
     refresh();
 
     while(1)
     {
         int key = getch();
+        
         if (key == 10)                                       // Replace this key with the short cut to save.
-        {
-            printf("write to file here");
-            break;                                          // Once we have shortcuts working this can be removed. We need to setup proper exiting.
+        {           
+            clear();
+            printw(buffer_list[current_buffer]->text);
+            getch();
+            update_file();
+            break;                                          // Once we have shortcuts working this can be removed. We need to setup proper exiting.      
         }
+        else
+        {
+            process_keystroke(buffer_list[current_buffer], key);
+            getyx(stdscr, y, x);            
+            buffer_list[current_buffer]->pos = linear_coordinate_translator(x, y, tx);
+        }
+        refresh();
     }
     
     endwin();
@@ -66,43 +86,45 @@ void open_file(char* fname)
     }
 
     file_size = *&stat_buffer.st_size;
-    char* buffer;
+    char* text;
 
-    if ((buffer = (char*)malloc(sizeof(char) * file_size)) == NULL)
+    if ((text = (char*)malloc(sizeof(char) * file_size)) == NULL)
     {
         printf("failed to allocate memory\n");
         fclose(fd);
         return;
     }
 
-    fread(buffer, file_size, 1, fd);
+    fread(text, file_size, 1, fd);
     fclose(fd);
 
     if (buffer_list_size == 0)
     {
-        if ((buffer_list = (buffer_info**)malloc(sizeof(buffer_info*))) == NULL)
+        if ((buffer_list = (buffer**)malloc(sizeof(buffer*))) == NULL)
         {
             printf("failed to allocate memory\n");
-            free(buffer);
+            free(text);
             return;
         }        
     }
     else
     {
-        if ((realloc(buffer_list, sizeof(buffer_info*) * (buffer_list_size + 1))) == NULL)
+        if ((realloc(buffer_list, sizeof(buffer*) * (buffer_list_size + 1))) == NULL)
         {
             printf("failed to grow size of buffer list\n");
-            free(buffer);
+            free(text);
             return;
         }                
     }
 
-    buffer_list[buffer_list_size] = (buffer_info*)malloc(sizeof(buffer_info));
-    buffer_list[buffer_list_size]->buffer = buffer;
+    buffer_list[buffer_list_size] = (buffer*)malloc(sizeof(buffer));
+    buffer_list[buffer_list_size]->size = strlen(text);
+//    buffer_list[buffer_list_size]->pos = 0;
+    buffer_list[buffer_list_size]->pos = strlen(text);
+    buffer_list[buffer_list_size]->text = text;
     buffer_list[buffer_list_size]->fname = fname;
     current_buffer = buffer_list_size;
     buffer_list_size++;
-
 }
 
 
@@ -110,37 +132,26 @@ void dealloc_all_buffers()
 {
     for (int i = 0; i < buffer_list_size; i++)
     {
+        free(buffer_list[i]->text);
         free(buffer_list[i]);
     }
 
     free(buffer_list);
 }
 
-void update_file()
+void update_file(WINDOW* win)
 {
     FILE* fd;
     char* fname = buffer_list[current_buffer]->fname;
-    char* buffer = buffer_list[current_buffer]->buffer;
+    char* text = buffer_list[current_buffer]->text;
     fd = fopen(fname, "w");
-    fwrite(buffer, strlen(buffer), 1, fd);
+    fwrite(text, strlen(text), 1, fd);
     fclose(fd);
 }
 
 
 // TODO
 
-// Save screen contents to files associated buffer.
-// Handle more complex keyboard inputs (shortcuts, arrows, sigactions).
-// Include a shortcut to add new files and change buffers (still need to test).
 // Render a text cursor (currently invisible).
-// How do we handle when the contents of the screen is larger than the size of the buffer?
-// write function to change buffer
-
-// Change Buffer
-// switch to a new buffer
-// given a name search the buffer list for the new buffer
-// update buffer number
-// create new buffer on unrecognized name
-
-// NOTE
-// seg faults are most likely to occur in open_file
+// Make call to process keys.
+// Handle re-drawing of active buffer to the screen.
