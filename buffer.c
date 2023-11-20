@@ -1,35 +1,40 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <string.h>
+#include <ncurses.h>
 #include "cmacs.h"
 
 
 // Pos is the position where the character should be inserted in the buffer.
 int add_char_to_buffer(buffer* buf, char character)
 {
-    int new_buffer_size = strlen(buf->text) + 1;
+    int new_text_len = strlen(buf->text) + 1;
+    int buffer_size = buf->size;
     int pos = buf->pos;
 
-    size_t memory_size = malloc_usable_size(buf->text);
-    size_t buffer_memory_consumed = new_buffer_size * sizeof(char);           // We include the + 1 because we will be adding a char.
+//    printf("pos: %d, n_len: %d\n", pos, new_text_len);
 
-    if (memory_size < buffer_memory_consumed)
+    if ((new_text_len - 1) >= buffer_size)
     {
-        if ((realloc(buf->text, memory_size + 1024)) == NULL)
+        if ((buf->text = (char*)realloc(buf->text, buffer_size + 1024)) == NULL)
         {
             printf("realloc failed\n");
             return 0;
         }
+        buf->size += 1024;
+//        printf("(realloc o_sz: %d, n_sz: %d\n)", buffer_size, buf->size);
     }
 
-    if (pos != new_buffer_size)                                               // This means we are not inserting at the end of the char* and need to shift the characters.
-    {
+    if (pos != (new_text_len - 1))                                               // This means we are not inserting at the end of the char* and need to shift the characters.
+    {        
+//        printf("middle \n");
         memmove(&buf->text[pos], &buf->text[pos + 1], strlen(&buf->text[pos]));
         buf->text[pos] = character;
         return 1;
     }
     else
     {
+//        printf("end pos: %d\n", pos);
         buf->text[pos] = character;
         buf->text[pos + 1] = '\0';
         return 1;
