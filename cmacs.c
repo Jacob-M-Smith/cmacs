@@ -18,6 +18,7 @@ int main (int argc, char** argv)
     // screen loop goes here
 
     initscr();
+    noecho();
 
     int ty, tx, by, bx;
     int y, x;
@@ -25,14 +26,13 @@ int main (int argc, char** argv)
     getbegyx(stdscr, by, bx);
     getmaxyx(stdscr, ty, tx);
 
-    WINDOW* win = newwin(by, bx, ty, tx);
-
+    clear();
     printw(buffer_list[current_buffer]->text);
-
     refresh();
 
     while(1)
     {
+
         int key = getch();
         
         if (key == 10)                                       // Replace this key with the short cut to save.
@@ -43,12 +43,28 @@ int main (int argc, char** argv)
             update_file();
             break;                                          // Once we have shortcuts working this can be removed. We need to setup proper exiting.      
         }
-        else
+/*        else if (key == 16)
         {
+            getyx(stdscr, y, x);
+            y--;
+            move(y, x);
+            }*/
+        else if (key == 2)
+        {
+            getyx(stdscr, y, x);
+            if (x > 0)
+                x--;
+            move(y, x);
+        }
+        else
+        {           
             process_keystroke(buffer_list[current_buffer], key);
+            clear();
+            printw(buffer_list[current_buffer]->text);
             getyx(stdscr, y, x);            
             buffer_list[current_buffer]->pos = linear_coordinate_translator(x, y, tx);
         }
+
         refresh();
     }
     
