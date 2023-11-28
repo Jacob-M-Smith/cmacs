@@ -24,7 +24,7 @@ int add_char_to_buffer(buffer* buf, char character)
 
     if (pos != (new_text_len - 1))                                               // This means we are not inserting at the end of the char* and need to shift the characters.
     {        
-        memcpy(buf->text + pos + 1, buf->text + pos, (buf->text - pos)*sizeof(char));
+        memcpy(buf->text + pos + 1, buf->text + pos, (buffer_size - pos) * sizeof(char));
         buf->text[pos] = character;
         return 1;
     }
@@ -94,6 +94,15 @@ int process_keystroke(buffer* buf, int key)
     else
     {
         add_char_to_buffer(buf, (char)key);
+        int y, x, ymax, xmax;
+        getyx(stdscr, y, x);
+        getmaxyx(stdscr, ymax, xmax);
+        clear();
+        x++;
+        buf->x = x;
+        buf->pos = linear_coordinate_translator(x, y, xmax);
+        printw(buf->text);
+        move(y, x);
     }
 
     return 1;
