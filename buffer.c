@@ -91,6 +91,10 @@ int process_keystroke(buffer* buf, int key)
             buf->y = y;
         }
     }
+    else if (key < 0x1f)
+    {
+        return 0;  // stop unimplemented hotkeys
+    }
     else
     {
         add_char_to_buffer(buf, (char)key);
