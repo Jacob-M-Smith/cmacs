@@ -34,20 +34,15 @@ int main (int argc, char** argv)
     while(1)
     {
         int key = getch();
-//        printw("%d", key);
         
-        if (key == 24)
+        if (key == CTRL('x'))
         {
             key = getch();
             
-            if (key == CTRL('s'))
-            {
-                clear();
-                printw("Saving buffer...\n Click any key to exit.");
-                getch();
+            if (key == CTRL('s'))            
                 update_file();
-                break;                                          
-            }
+            else if (key == CTRL('c'))                            
+                break;
             else
             {
                 // go to ctrl+x sub menu when implemented
