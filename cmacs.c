@@ -19,6 +19,7 @@ int main (int argc, char** argv)
 
     initscr();
     noecho();
+    raw();
 
     int ty, tx, by, bx;
     int y, x;
@@ -32,16 +33,26 @@ int main (int argc, char** argv)
 
     while(1)
     {
-
         int key = getch();
+//        printw("%d", key);
         
-        if (key == 10)                                       // Replace this key with the short cut to save.
-        {           
-            clear();
-            printw(buffer_list[current_buffer]->text);
-            getch();
-            update_file();
-            break;                                          // Once we have shortcuts working this can be removed. We need to setup proper exiting.      
+        if (key == 24)
+        {
+            key = getch();
+            
+            if (key == CTRL('s'))
+            {
+                clear();
+                printw("Saving buffer...\n Click any key to exit.");
+                getch();
+                update_file();
+                break;                                          
+            }
+            else
+            {
+                // go to ctrl+x sub menu when implemented
+                continue;
+            }
         }
         else
         {           
