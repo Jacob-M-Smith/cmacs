@@ -38,11 +38,65 @@ int add_char_to_buffer(buffer* buf, char character)
 
 int process_keystroke(buffer* buf, int key)
 {
-    int suc = add_char_to_buffer(buf, (char)key);
-    return suc;
 
-    // Adding the character is the default option. We need to add cases for hotkeys and other special keys.
-    // Backspace could utilize memmove?
+    if (key == CTRL('f'))
+    {
+        int y, x, ymax, xmax;
+        getyx(stdscr, y, x);
+        getmaxyx(stdscr, ymax, xmax);
+        if (x < xmax)
+        {
+            x++;
+            move(y, x);
+            buf->pos = linear_coordinate_translator(x, y, xmax);
+            buf->x = x;
+        }
+    }
+    else if (key == CTRL('b'))
+    {
+        int y, x, ymax, xmax;
+        getyx(stdscr, y, x);
+        getmaxyx(stdscr, ymax, xmax);
+        if (x > 0)
+        {
+            x--;
+            move(y, x);
+            buf->pos = linear_coordinate_translator(x, y, xmax);
+            buf->x = x;
+        }
+    }
+    else if (key == CTRL('n'))
+    {
+        int y, x, ymax, xmax;
+        getyx(stdscr, y, x);
+        getmaxyx(stdscr, ymax, xmax);
+        if (y < ymax)
+        {
+            y++;
+            move(y, x);
+            buf->pos = linear_coordinate_translator(x, y, xmax);
+            buf->y = y;
+        }
+    }
+    else if (key == CTRL('p'))
+    {
+        int y, x, ymax, xmax;
+        getyx(stdscr, y, x);
+        getmaxyx(stdscr, ymax, xmax);
+        if (y > 0)
+        {
+            y--;
+            move(y, x);
+            buf->pos = linear_coordinate_translator(x, y, xmax);
+            buf->y = y;
+        }
+    }
+    else
+    {
+        add_char_to_buffer(buf, (char)key);
+    }
+
+    return 1;
 }
 
 // Calculates the index for the buffer from the x and y coordinates of the window's cursor.
