@@ -6,7 +6,8 @@
 typedef struct buffer
 {
     char* fname;  
-    int   pos;
+    int   pos;            // position of cursor in linear buffer
+    int   x, y;           // x, y value of screen cursor
     uint  size;           // amount of memory allocated to the buffer
     char* text;
 } buffer;
