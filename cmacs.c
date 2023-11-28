@@ -46,10 +46,6 @@ int main (int argc, char** argv)
         else
         {           
             process_keystroke(buffer_list[current_buffer], key);
-            clear();
-            printw(buffer_list[current_buffer]->text);
-            getyx(stdscr, y, x);            
-            buffer_list[current_buffer]->pos = linear_coordinate_translator(x, y, tx);
         }
 
         refresh();
