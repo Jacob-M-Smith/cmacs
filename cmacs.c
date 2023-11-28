@@ -43,19 +43,6 @@ int main (int argc, char** argv)
             update_file();
             break;                                          // Once we have shortcuts working this can be removed. We need to setup proper exiting.      
         }
-/*        else if (key == 16)
-        {
-            getyx(stdscr, y, x);
-            y--;
-            move(y, x);
-            }*/
-        else if (key == 2)
-        {
-            getyx(stdscr, y, x);
-            if (x > 0)
-                x--;
-            move(y, x);
-        }
         else
         {           
             process_keystroke(buffer_list[current_buffer], key);
