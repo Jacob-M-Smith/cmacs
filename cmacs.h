@@ -3,6 +3,10 @@
 
 #define CTRL(x) ((x) & 0x1f)
 
+#define BCKSPCE  127
+#define TAB      9
+
+
 typedef struct buffer
 {
     char* fname;  
