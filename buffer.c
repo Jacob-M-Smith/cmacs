@@ -36,14 +36,45 @@ int add_char_to_buffer(buffer* buf, char character)
     }
 }
 
+// delete is a bool for direction 1 for delete, 0 for backspace
+int remove_char_from_buffer(buffer* buf, int delete)
+{
+    int buf_len = strlen(buf->text);
+    int pos = buf->pos;
+
+    if (delete)  // remove current char
+    {
+        if (pos == buf_len)
+            return 1;
+        else
+        {
+            memcpy(buf->text + pos, buf->text + pos + 1, (buf->size - pos) * sizeof(char));
+        }           
+
+    }
+    else         // remove previous char
+    {
+        if (pos == buf_len - 1)
+        {
+            buf->text[pos - 1] = '\0';
+        }
+        else
+        {
+            memcpy(buf->text + pos - 1, buf->text + pos, (buf->size - pos) * sizeof(char));
+        }
+    }
+    return 1;
+}
+
 int process_keystroke(buffer* buf, int key)
 {
+    int y, x, ymax, xmax;
+    getyx(stdscr, y, x);
+    getmaxyx(stdscr, ymax, xmax);
+    int update_display = 0;
 
     if (key == CTRL('f'))
     {
-        int y, x, ymax, xmax;
-        getyx(stdscr, y, x);
-        getmaxyx(stdscr, ymax, xmax);
         if (x < xmax)
         {
             x++;
@@ -54,9 +85,6 @@ int process_keystroke(buffer* buf, int key)
     }
     else if (key == CTRL('b'))
     {
-        int y, x, ymax, xmax;
-        getyx(stdscr, y, x);
-        getmaxyx(stdscr, ymax, xmax);
         if (x > 0)
         {
             x--;
@@ -67,9 +95,6 @@ int process_keystroke(buffer* buf, int key)
     }
     else if (key == CTRL('n'))
     {
-        int y, x, ymax, xmax;
-        getyx(stdscr, y, x);
-        getmaxyx(stdscr, ymax, xmax);
         if (y < ymax)
         {
             y++;
@@ -80,9 +105,6 @@ int process_keystroke(buffer* buf, int key)
     }
     else if (key == CTRL('p'))
     {
-        int y, x, ymax, xmax;
-        getyx(stdscr, y, x);
-        getmaxyx(stdscr, ymax, xmax);
         if (y > 0)
         {
             y--;
@@ -91,6 +113,17 @@ int process_keystroke(buffer* buf, int key)
             buf->y = y;
         }
     }
+    else if (key == CTRL('d'))
+    {
+        remove_char_from_buffer(buf, 1);
+        update_display = 1;
+    }
+    else if (key == CTRL('h') || key == BCKSPCE)
+    {
+        remove_char_from_buffer(buf, 0);
+        update_display = 1;
+        x--;
+    }
     else if (key < 0x1f)
     {
         return 0;  // stop unimplemented hotkeys
@@ -98,12 +131,13 @@ int process_keystroke(buffer* buf, int key)
     else
     {
         add_char_to_buffer(buf, (char)key);
-        int y, x, ymax, xmax;
-        getyx(stdscr, y, x);
-        getmaxyx(stdscr, ymax, xmax);
-        clear();
+        update_display = 1;
         x++;
-        buf->x = x;
+    }
+
+    if (update_display)
+    {
+        clear();
         buf->pos = linear_coordinate_translator(x, y, xmax);
         printw(buf->text);
         move(y, x);
