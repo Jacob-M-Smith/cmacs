@@ -153,10 +153,3 @@ void update_file(WINDOW* win)
     fwrite(text, strlen(text), 1, fd);
     fclose(fd);
 }
-
-
-// TODO
-
-// Render a text cursor (currently invisible).
-// Make call to process keys.
-// Handle re-drawing of active buffer to the screen.
