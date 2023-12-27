@@ -24,13 +24,17 @@ typedef struct line
     char* text;               // contents of line
 } line;
 
+//cmacs.c is driver
+
+// file_io.c
 void     open_file(char*);
 void     dealloc_all_buffers();
 void     update_file();
+
+//buffer.c
 int      add_char_to_buffer(buffer*, char);
 int      process_keystroke(buffer*, int);
 int      linear_coordinate_translator(int, int, int);
 void*    calculate_end_ptr(void*, int, int);
-
 
 #endif
