@@ -21,15 +21,11 @@ int main (int argc, char** argv)
     noecho();
     raw();
 
-    int ty, tx, by, bx;
-    int y, x;
-
-    getbegyx(stdscr, by, bx);
-    getmaxyx(stdscr, ty, tx);
-
     clear();
     printw(buffer_list[current_buffer]->text);
     refresh();
+
+    move(0, 0);
 
     while(1)
     {
@@ -121,11 +117,10 @@ void open_file(char* fname)
             return;
         }                
     }
-
+    
     buffer_list[buffer_list_size] = (buffer*)malloc(sizeof(buffer));
     buffer_list[buffer_list_size]->size = strlen(text);
-//    buffer_list[buffer_list_size]->pos = 0;
-    buffer_list[buffer_list_size]->pos = strlen(text);
+    buffer_list[buffer_list_size]->pos = 0;
     buffer_list[buffer_list_size]->text = text;
     buffer_list[buffer_list_size]->fname = fname;
     current_buffer = buffer_list_size;
@@ -153,10 +148,3 @@ void update_file(WINDOW* win)
     fwrite(text, strlen(text), 1, fd);
     fclose(fd);
 }
-
-
-// TODO
-
-// Render a text cursor (currently invisible).
-// Make call to process keys.
-// Handle re-drawing of active buffer to the screen.
