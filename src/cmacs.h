@@ -6,6 +6,13 @@
 #define BCKSPCE  127
 #define TAB      9
 
+typedef struct line
+{
+    struct line* next;        // next line in sequence, null if end
+    struct line* prev;        // previous line in sequence, null if head
+    uint size;                // size of memory consumed
+    char* text;               // contents of line
+} line;
 
 typedef struct buffer
 {
@@ -15,14 +22,6 @@ typedef struct buffer
     line* lines_head;         // line 0
     line* current_line;       // current line we are operating on 
 } buffer;
-
-typedef struct line
-{
-    line* next;               // next line in sequence, null if end
-    line* prev;               // previous line in sequence, null if head
-    uint len;                 // length of line
-    char* text;               // contents of line
-} line;
 
 //cmacs.c is driver
 
