@@ -79,7 +79,7 @@ int process_keystroke(buffer* buf, int key)
         {
             x++;
             move(y, x);
-            buf->pos = linear_coordinate_translator(x, y, xmax);
+            buf->pos++;
             buf->x = x;
         }
     }
@@ -89,7 +89,7 @@ int process_keystroke(buffer* buf, int key)
         {
             x--;
             move(y, x);
-            buf->pos = linear_coordinate_translator(x, y, xmax);
+            buf->pos--;
             buf->x = x;
         }
     }
@@ -99,7 +99,7 @@ int process_keystroke(buffer* buf, int key)
         {
             y++;
             move(y, x);
-            buf->pos = linear_coordinate_translator(x, y, xmax);
+//            buf->pos;
             buf->y = y;
         }
     }
@@ -109,7 +109,8 @@ int process_keystroke(buffer* buf, int key)
         {
             y--;
             move(y, x);
-            buf->pos = linear_coordinate_translator(x, y, xmax);
+// NEEDS MORE COMPLICATED MATH FOR BUFFER POSITION
+//            buf->pos = linear_coordinate_translator(x, y, xmax);
             buf->y = y;
         }
     }
@@ -154,20 +155,3 @@ int process_keystroke(buffer* buf, int key)
 
     return 1;
 }
-
-// Calculates the index for the buffer from the x and y coordinates of the window's cursor.
-int linear_coordinate_translator(int x, int y, int x_max)
-{  
-    return (x_max * y) + x;
-}
-
-// TODO
-
-// Handle control keys in process_keystroke.
-// Movement strokes with wmove
-
-// Function to change buffers
-// Adjust current buffer number.
-// Create a new buffer if necessary.
-
-// Linear translation function.
