@@ -124,6 +124,13 @@ int process_keystroke(buffer* buf, int key)
         update_display = 1;
         x--;
     }
+    else if (key == CTRL('j'))
+    {
+        add_char_to_buffer(buf, '\n');
+        y++;
+        x = 0;
+        update_display = 1;
+    }
     else if (key < 0x1f)
     {
         return 0;  // stop unimplemented hotkeys
