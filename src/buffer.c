@@ -6,9 +6,9 @@
 
 
 // Pos is the position where the character should be inserted in the buffer.
-int add_char_to_buffer(buffer* buf, char character)
+int add_char_to_buffer(line* lin, char character)
 {
-    int new_text_len = strlen(buf->text) + 1;
+    int new_text_len = strlen(lin->text) + 1;
     int buffer_size = buf->size;
     int pos = buf->pos;
 
