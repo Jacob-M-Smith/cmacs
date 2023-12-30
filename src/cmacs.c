@@ -16,7 +16,6 @@ int main (int argc, char** argv)
     char* fname = argv[1];
 
     open_file(fname);
-    // screen loop goes here
 
     initscr();
     noecho();
@@ -29,7 +28,7 @@ int main (int argc, char** argv)
     getmaxyx(stdscr, ty, tx);
 
     clear();
-    printw(buffer_list[current_buffer]->text);
+    // NEED TO MAKE DISPLAY CALL HERE
     refresh();
 
     while(1)
