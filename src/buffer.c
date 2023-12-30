@@ -122,6 +122,7 @@ int process_keystroke(buffer* buf, int key)
     {
         remove_char_from_buffer(buf, 0);
         update_display = 1;
+        buf->pos--;
         x--;
     }
     else if (key == CTRL('j'))
@@ -129,6 +130,7 @@ int process_keystroke(buffer* buf, int key)
         add_char_to_buffer(buf, '\n');
         y++;
         x = 0;
+        buf->pos += 2;
         update_display = 1;
     }
     else if (key < 0x1f)
@@ -139,13 +141,13 @@ int process_keystroke(buffer* buf, int key)
     {
         add_char_to_buffer(buf, (char)key);
         update_display = 1;
+        buf->pos++;
         x++;
     }
 
     if (update_display)
     {
         clear();
-        buf->pos = linear_coordinate_translator(x, y, xmax);
         printw(buf->text);
         move(y, x);
     }
