@@ -16,13 +16,15 @@ typedef struct buffer
     char* text;
 } buffer;
 
+// files.c (handles file input and output)
 void     open_file(char*);
-void     dealloc_all_buffers();
 void     update_file();
+
+// buffer.c (handle buffer management)
+void     dealloc_all_buffers();
 int      add_char_to_buffer(buffer*, char);
 int      process_keystroke(buffer*, int);
-void*    calculate_end_ptr(void*, int, int);
 size_t   strline(const char*);
 
-
+// cmacs.c is driver
 #endif
