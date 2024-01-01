@@ -23,6 +23,7 @@ int      add_char_to_buffer(buffer*, char);
 int      process_keystroke(buffer*, int);
 int      linear_coordinate_translator(int, int, int);
 void*    calculate_end_ptr(void*, int, int);
+size_t   strline(const char*);
 
 
 #endif
