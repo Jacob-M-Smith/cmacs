@@ -6,7 +6,6 @@
 #define BCKSPCE  127
 #define TAB      9
 
-
 typedef struct buffer
 {
     char* fname;  
@@ -15,6 +14,11 @@ typedef struct buffer
     uint  size;           // amount of memory allocated to the buffer
     char* text;
 } buffer;
+
+// buffer management variables
+extern buffer** buffer_list;
+extern uint buffer_list_size;
+extern uint current_buffer;
 
 // files.c (handles file input and output)
 void     open_file(char*);
