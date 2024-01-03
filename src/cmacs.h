@@ -9,9 +9,9 @@
 typedef struct buffer
 {
     char*  fname;  
-    int    pos;            // position of cursor in linear buffer
-    int    x, y;           // x, y value of screen cursor
+    uint   pos;            // position of cursor in linear buffer
     uint   size;           // amount of memory allocated to the buffer
+    uint   depth;          // number of newline characters in a file   
     char*  text;
     char** newline_record; // contains the starting char of every newline
 } buffer;
@@ -22,15 +22,17 @@ extern uint buffers_size;
 extern uint curr_buffer;
 
 // files.c (handles file input and output)
+void     dealloc_all_buffers();
 void     open_file(char*);
 void     update_file();
+void     mem_panic();
 
 // buffer.c (handle buffer management)
-void     dealloc_all_buffers();
 int      add_char_to_buffer(char);
-int      remove_char_from_buffer(int);
 int      process_keystroke(int);
+int      remove_char_from_buffer(int);
 size_t   strline(const char*);
+void     update_newline_record();
 
 // cmacs.c is driver
 #endif
