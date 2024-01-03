@@ -4,7 +4,6 @@
 #include <ncurses.h>
 #include "cmacs.h"
 
-
 // Pos is the position where the character should be inserted in the buffer.
 int add_char_to_buffer(buffer* buf, char character)
 {
@@ -158,15 +157,78 @@ size_t strline (const char *str)
     }
 }
 
+/* for adding more cases
+  case CTRL('f'):
+  break;*/
 int process_keystroke(buffer* buf, int key)
+{
+    int y, x, maxy, maxx;
+    int update_display = 0;                // set to 1 when screen needs to be redrawn
+
+    char curr = buf->text[buf->pos];                       
+    int curr_is_null = (curr == '\0');
+    int curr_is_newl = (curr == '\n');
+
+    getyx(stdscr, y, x);
+    getmaxyx(stdscr, ymax, xmax);
+
+    if (key < 0x1f)  // key is a control key
+    {
+        swtich(key)
+        {
+            case CTRL('f'):
+                if (curr_is_null)
+                    break;
+                if (curr_is_newl || (x == maxx - 1))
+                {
+                    x = 0;
+                    y++;
+                }
+                else
+                {
+                    x++;
+                }
+                buf->pos++;
+                move(y, x);
+                break;
+            case CTRL('b'):
+                break;
+            case CTRL('n'):
+                break;
+            case CTRL('p'):
+                break;
+            case CTRL('d'):
+                break;
+            case CTRL('h'):
+                break;
+            case CTRL('j'):
+                break;
+            case CTRL('f'):
+                break;
+            default:
+                return 0;            
+        }
+    }
+    else             // key is regular input
+    {
+        
+    }
+
+}
+
+int process_keystroke2(buffer* buf, int key)
 {
     int y, x, ymax, xmax;
     getyx(stdscr, y, x);
     getmaxyx(stdscr, ymax, xmax);
+
     int update_display = 0;
 
     if (key == CTRL('f'))
     {
+        char curr = buf->text[buf->pos];
+        if (curr == '\n' || curr == '\0')
+            return 0;
         if (x < xmax)
         {
             x++;
