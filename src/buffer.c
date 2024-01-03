@@ -21,7 +21,7 @@ int add_char_to_buffer(buffer* buf, char character)
         buf->size += 1024;
     }
 
-    if (pos != (new_text_len - 1))                                               // This means we are not inserting at the end of the char* and need to shift the characters.
+    if (pos != (new_text_len - 1))    // We are not at the end of the buffer. Shift memory
     {        
         memcpy(buf->text + pos + 1, buf->text + pos, (buffer_size - pos) * sizeof(char));
         buf->text[pos] = character;
@@ -170,11 +170,11 @@ int process_keystroke(buffer* buf, int key)
     int curr_is_newl = (curr == '\n');
 
     getyx(stdscr, y, x);
-    getmaxyx(stdscr, ymax, xmax);
+    getmaxyx(stdscr, maxy, maxx);
 
     if (key < 0x1f)  // key is a control key
     {
-        swtich(key)
+        switch(key)
         {
             case CTRL('f'):
                 if (curr_is_null)
@@ -192,6 +192,21 @@ int process_keystroke(buffer* buf, int key)
                 move(y, x);
                 break;
             case CTRL('b'):
+                if (x != 0)
+                {
+                    x--;
+                    buf->pos--;
+                    move(y, x);
+                }
+                else
+                {
+                    if (y == 0)
+                        break;
+                    else 
+                    {
+                        
+                    }
+                }
                 break;
             case CTRL('n'):
                 break;
@@ -203,17 +218,24 @@ int process_keystroke(buffer* buf, int key)
                 break;
             case CTRL('j'):
                 break;
-            case CTRL('f'):
-                break;
             default:
                 return 0;            
         }
     }
     else             // key is regular input
     {
-        
+        add_char_to_buffer(buf, (char)key);
+        update_display = 1;
+        buf->pos++;
+        x++; // needs end of line handling
     }
 
+    if (update_display)
+    {
+        clear();
+        printw(buf->text);
+        move(y, x);
+    }
 }
 
 int process_keystroke2(buffer* buf, int key)
