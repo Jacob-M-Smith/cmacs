@@ -43,7 +43,7 @@ int main (int argc, char** argv)
         }
         else
         {           
-            process_keystroke(buffers[curr_buffer], key);
+            process_keystroke(key);
         }
 
         refresh();
