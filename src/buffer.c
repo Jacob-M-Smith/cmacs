@@ -204,7 +204,7 @@ int process_keystroke(buffer* buf, int key)
                         break;
                     else 
                     {
-                        
+                        // use array of pointers to start of newline  
                     }
                 }
                 break;
@@ -217,6 +217,11 @@ int process_keystroke(buffer* buf, int key)
             case CTRL('h'):
                 break;
             case CTRL('j'):
+                add_char_to_buffer(buf, '\n');
+                y++;
+                x = 0;
+                buf->pos++;
+                update_display = 1;
                 break;
             default:
                 return 0;            
