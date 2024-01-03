@@ -10,8 +10,8 @@ int main (int argc, char** argv)
 {
     char* fname = argv[1];
 
+    buffer_list_size = 0;
     open_file(fname);
-    // screen loop goes here
 
     initscr();
     noecho();
