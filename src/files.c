@@ -6,9 +6,9 @@
 #include <string.h>
 #include "cmacs.h"
 
-buffer** buffer_list;
-uint buffer_list_size;
-uint current_buffer;
+buffer** buffers;
+uint buffers_size;
+uint curr_buffer;
 
 // should this return int for errors?
 // passed prelim testing (need in depth testing)
@@ -49,19 +49,19 @@ void open_file(char* fname)
     fread(text, file_size, 1, fd);
     fclose(fd);
 
-    if (buffer_list_size == 0)
+    if (buffers_size == 0)
     {
-        if ((buffer_list = (buffer**)malloc(sizeof(buffer*))) == NULL)
+        if ((buffers = (buffer**)malloc(sizeof(buffer*))) == NULL)
         {
             printf("failed to allocate memory\n");
             free(text);
             return;
         }
-        current_buffer = 0;
+        curr_buffer = 0;
     }
     else
     {
-        if ((realloc(buffer_list, sizeof(buffer*) * (buffer_list_size + 1))) == NULL)
+        if ((realloc(buffers, sizeof(buffer*) * (buffers_size + 1))) == NULL)
         {
             printf("failed to grow size of buffer list\n");
             free(text);
@@ -69,32 +69,32 @@ void open_file(char* fname)
         }
     }
     
-    buffer_list[buffer_list_size] = (buffer*)malloc(sizeof(buffer));
-    buffer_list[buffer_list_size]->size = strlen(text);
-    buffer_list[buffer_list_size]->pos = 0;
-    buffer_list[buffer_list_size]->text = text;
-    buffer_list[buffer_list_size]->fname = fname;
-    current_buffer = buffer_list_size;
-    buffer_list_size++;
+    buffers[buffers_size] = (buffer*)malloc(sizeof(buffer));
+    buffers[buffers_size]->size = strlen(text);
+    buffers[buffers_size]->pos = 0;
+    buffers[buffers_size]->text = text;
+    buffers[buffers_size]->fname = fname;
+    curr_buffer = buffers_size;
+    buffers_size++;
 }
 
 
 void dealloc_all_buffers()
 {
-    for (int i = 0; i < buffer_list_size; i++)
+    for (int i = 0; i < buffers_size; i++)
     {
-        free(buffer_list[i]->text);
-        free(buffer_list[i]);
+        free(buffers[i]->text);
+        free(buffers[i]);
     }
 
-    free(buffer_list);
+    free(buffers);
 }
 
 void update_file(WINDOW* win)
 {
     FILE* fd;
-    char* fname = buffer_list[current_buffer]->fname;
-    char* text = buffer_list[current_buffer]->text;
+    char* fname = buffers[curr_buffer]->fname;
+    char* text = buffers[curr_buffer]->text;
     fd = fopen(fname, "w");
     fwrite(text, strlen(text), 1, fd);
     fclose(fd);

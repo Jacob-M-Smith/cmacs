@@ -10,7 +10,7 @@ int main (int argc, char** argv)
 {
     char* fname = argv[1];
 
-    buffer_list_size = 0;
+    buffers_size = 0;
     open_file(fname);
 
     initscr();
@@ -18,7 +18,7 @@ int main (int argc, char** argv)
     raw();
 
     clear();
-    printw(buffer_list[current_buffer]->text);
+    printw(buffers[curr_buffer]->text);
     refresh();
 
     move(0, 0);
@@ -43,7 +43,7 @@ int main (int argc, char** argv)
         }
         else
         {           
-            process_keystroke(buffer_list[current_buffer], key);
+            process_keystroke(buffers[curr_buffer], key);
         }
 
         refresh();

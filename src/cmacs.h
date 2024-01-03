@@ -16,9 +16,9 @@ typedef struct buffer
 } buffer;
 
 // buffer management variables
-extern buffer** buffer_list;
-extern uint buffer_list_size;
-extern uint current_buffer;
+extern buffer** buffers;
+extern uint buffers_size;
+extern uint curr_buffer;
 
 // files.c (handles file input and output)
 void     open_file(char*);
