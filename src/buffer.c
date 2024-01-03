@@ -5,8 +5,9 @@
 #include "cmacs.h"
 
 // Pos is the position where the character should be inserted in the buffer.
-int add_char_to_buffer(buffer* buf, char character)
+int add_char_to_buffer(char character)
 {
+    buffer* buf = buffers[curr_buffer]; 
     int new_text_len = strlen(buf->text) + 1;
     int buffer_size = buf->size;
     int pos = buf->pos;
@@ -36,8 +37,9 @@ int add_char_to_buffer(buffer* buf, char character)
 }
 
 // delete is a bool for direction 1 for delete, 0 for backspace
-int remove_char_from_buffer(buffer* buf, int delete)
+int remove_char_from_buffer(int delete)
 {
+    buffer* buf = buffers[curr_buffer];
     int buf_len = strlen(buf->text);
     int pos = buf->pos;
 
@@ -160,11 +162,12 @@ size_t strline (const char *str)
 /* for adding more cases
   case CTRL('f'):
   break;*/
-int process_keystroke(buffer* buf, int key)
+int process_keystroke(int key)
 {
     int y, x, maxy, maxx;
     int update_display = 0;                // set to 1 when screen needs to be redrawn
 
+    buffer* buf = buffers[curr_buffer];
     char curr = buf->text[buf->pos];                       
     int curr_is_null = (curr == '\0');
     int curr_is_newl = (curr == '\n');
@@ -217,7 +220,7 @@ int process_keystroke(buffer* buf, int key)
             case CTRL('h'):
                 break;
             case CTRL('j'):
-                add_char_to_buffer(buf, '\n');
+                add_char_to_buffer('\n');
                 y++;
                 x = 0;
                 buf->pos++;
@@ -229,7 +232,7 @@ int process_keystroke(buffer* buf, int key)
     }
     else             // key is regular input
     {
-        add_char_to_buffer(buf, (char)key);
+        add_char_to_buffer((char)key);
         update_display = 1;
         buf->pos++;
         x++; // needs end of line handling
@@ -243,6 +246,12 @@ int process_keystroke(buffer* buf, int key)
     }
 }
 
+int update_newline_record()
+{
+
+}
+
+/*
 int process_keystroke2(buffer* buf, int key)
 {
     int y, x, ymax, xmax;
@@ -335,4 +344,4 @@ int process_keystroke2(buffer* buf, int key)
     }
 
     return 1;
-}
+    }*/
