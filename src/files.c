@@ -7,8 +7,8 @@
 #include "cmacs.h"
 
 buffer** buffer_list;
-uint buffer_list_size = 0;
-uint current_buffer = 0;
+uint buffer_list_size;
+uint current_buffer;
 
 // should this return int for errors?
 // passed prelim testing (need in depth testing)
@@ -56,7 +56,8 @@ void open_file(char* fname)
             printf("failed to allocate memory\n");
             free(text);
             return;
-        }        
+        }
+        current_buffer = 0;
     }
     else
     {
@@ -65,7 +66,7 @@ void open_file(char* fname)
             printf("failed to grow size of buffer list\n");
             free(text);
             return;
-        }                
+        }
     }
     
     buffer_list[buffer_list_size] = (buffer*)malloc(sizeof(buffer));
