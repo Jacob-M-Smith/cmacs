@@ -246,9 +246,27 @@ int process_keystroke(int key)
     }
 }
 
-int update_newline_record()
+void update_newline_record()
 {
-
+    buffer* buf = buffers[curr_buffer];
+    free(buf->newline_record);
+    buf->depth = 0;
+    
+    buf->newline_record = (char**)malloc(sizeof(char*));
+    buf->newline_record[0] = buf->text;
+    
+    char* beg = buf->text; 
+    int found_null = strline(beg);
+    int mem_fail;
+    
+    while(found_null != -1)
+    {
+        buf->depth++;
+        if (realloc(buf->newline_record, sizeof(char*) * (buf->depth + 1)) == NULL)   // needs error checking
+            mem_panic();
+        buf->newline_record[buf->depth] = &buf->text[buf->pos + 1];
+        found_null = strline(buf->newline_record[buf->depth]);
+    }    
 }
 
 /*
