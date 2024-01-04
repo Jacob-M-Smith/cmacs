@@ -224,7 +224,8 @@ int process_keystroke(int key)
                 y++;
                 x = 0;
                 buf->pos++;
-                update_display = 1;
+                buf->depth++;
+                update_display = 1;                
                 break;
             default:
                 return 0;            
@@ -246,6 +247,30 @@ int process_keystroke(int key)
     }
 }
 
+int position_search()
+{
+    int x_target, x, y;
+    getyx(stdscr, y, x);
+    x_target = x;
+
+    buffer* buf = buffers[curr_buffer];
+    char* curr = &(buf->text[buf->pos]);
+
+    if (y == buf->depth)
+        return -1;
+
+    for (;;)
+    {
+        
+    }
+}
+
+void reverse_postiion_search()
+{
+
+}
+
+/*
 void update_newline_record()
 {
     buffer* buf = buffers[curr_buffer];
@@ -269,7 +294,6 @@ void update_newline_record()
     }    
 }
 
-/*
 int process_keystroke2(buffer* buf, int key)
 {
     int y, x, ymax, xmax;
