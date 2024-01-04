@@ -207,11 +207,17 @@ int process_keystroke(int key)
                         break;
                     else 
                     {
-                        // use array of pointers to start of newline  
+                        // not sure what to do here
                     }
                 }
                 break;
             case CTRL('n'):
+                x = position_search();
+                if (x)
+                {
+                    y += 1;
+                    move(y, x);
+                }
                 break;
             case CTRL('p'):
                 break;
@@ -249,9 +255,10 @@ int process_keystroke(int key)
 
 int position_search()
 {
-    int x_target, x, y;
+    int x_target, y_target, x, y;
     getyx(stdscr, y, x);
     x_target = x;
+    y_target = y + 1;
 
     buffer* buf = buffers[curr_buffer];
     char* curr = &(buf->text[buf->pos]);
@@ -261,7 +268,26 @@ int position_search()
 
     for (;;)
     {
-        
+        if (y == y_target && x == x_target)
+            return x;
+
+        if (y == y_target && *curr == '\n')
+            return x;
+
+        if (*curr == '\0')
+            return x;
+
+        if (*curr == '\n')
+        {
+            y++;
+            x = 0;
+        }
+        else
+        {
+            x++;
+        }
+        buf->pos++;
+        curr++;
     }
 }
 
