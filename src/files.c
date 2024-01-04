@@ -69,14 +69,25 @@ void open_file(char* fname)
         }
     }
     
+    // allocate new buffer 
     buffers[buffers_size] = (buffer*)malloc(sizeof(buffer));
-    buffers[buffers_size]->fname = fname;
-    buffers[buffers_size]->pos = 0;
-    buffers[buffers_size]->size = strlen(text);
-    buffers[buffers_size]->text = text;
     curr_buffer = buffers_size;
     buffers_size++;
-    buffers[curr_buffer]->depth = count_newline();
+
+    // buffer defaults
+    buffers[curr_buffer]->fname = fname;
+    buffers[curr_buffer]->pos = 0;
+    buffers[curr_buffer]->size = strlen(text);
+    buffers[curr_buffer]->text = text;
+    int d = count_newline();
+    buffers[curr_buffer]->depth = d;
+
+    // line manager
+    buffers[curr_buffer]->lines = (line*)malloc(sizeof(line));
+    line* lines = (buffers[curr_buffer]->lines);
+    lines->size = d;
+    lines->lens = (int*)malloc(sizeof(int) * d);
+    update_line_count();
 }
 
 
@@ -125,4 +136,33 @@ uint count_newline()
     }
 
     return counter;
+}
+
+void update_line_count()
+{
+    buffer* buf = buffers[curr_buffer];
+    line* lines = buf->lines;
+    char* curr = buf->text;
+
+    // realloc on size dif
+    if (buf->depth != lines->size)
+    {
+        if ((realloc(lines->lens, sizeof(int) * buf->depth)) == NULL)
+            mem_panic();
+        lines->size = buf->depth;
+    }
+
+    int pos = 0;
+    for (int i = 0; i <= buf->depth; i++)
+    {
+        if (i == buf->depth)
+        {
+            lines->lens[i] = strlen(curr);
+        }
+        else 
+        {
+            pos = lines->lens[i] = strline(curr);
+        }
+        curr = &curr[pos + 1];
+    }
 }
