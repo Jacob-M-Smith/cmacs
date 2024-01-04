@@ -80,7 +80,7 @@ size_t strline (const char *str)
   for (char_ptr = str; ((unsigned long int) char_ptr
 			& (sizeof (longword) - 1)) != 0;
        ++char_ptr)
-    if (*char_ptr == '\0')
+    if (*char_ptr == '\n')
       return char_ptr - str;
   /* All these elucidatory comments refer to 4-byte longwords,
      but the theory applies equally well to 8-byte longwords.  */
@@ -291,9 +291,39 @@ int position_search()
     }
 }
 
-void reverse_postiion_search()
+int reverse_postiion_search()
 {
+    int x_target, y_target, x, y;
+    getyx(stdscr, y, x);
+    x_target = x;
+    y_target = y - 1;
 
+    buffer* buf = buffers[curr_buffer];
+    char* curr = &(buf->text[buf->pos]);
+
+    if (y == 0)
+        return -1;
+
+    for (;;)
+    {
+        if (y == y_target && x == x_target)
+            return x;
+
+        if (y == y_target && x == 0)
+            return x;
+
+        if (*curr == '\n')
+        {
+            y--;
+            x = 0;
+        }
+        else
+        {
+            x++;
+        }
+        buf->pos++;
+        curr++;
+    }
 }
 
 /*
