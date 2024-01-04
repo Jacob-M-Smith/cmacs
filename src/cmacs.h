@@ -6,12 +6,19 @@
 #define BCKSPCE  127
 #define TAB      9
 
+typedef struct line       // holds information about lines
+{                         // makes navigation keys easier
+    uint size;
+    int* lens;
+} line;
+
 typedef struct buffer
 {
     char*  fname;  
     uint   pos;            // position of cursor in linear buffer
     uint   size;           // amount of memory allocated to the buffer
     uint   depth;          // number of newline characters in a file   
+    line*  lines;          // structure managing line lengths records
     char*  text;
 } buffer;
 
@@ -26,6 +33,7 @@ void     open_file(char*);
 void     update_file();
 void     mem_panic();
 uint     count_newline();
+void     update_line_count();
 
 // buffer.c (handle buffer management)
 int      add_char_to_buffer(char);
@@ -33,6 +41,7 @@ int      process_keystroke(int);
 int      remove_char_from_buffer(int);
 size_t   strline(const char*);
 int      position_search();
+int      reverse_position_search();
 //void     update_newline_record();
 
 // cmacs.c is driver
