@@ -74,10 +74,9 @@ void open_file(char* fname)
     buffers[buffers_size]->pos = 0;
     buffers[buffers_size]->size = strlen(text);
     buffers[buffers_size]->text = text;
-    buffers[buffers_size]->newline_record = (char**)malloc(sizeof(char*));
     curr_buffer = buffers_size;
     buffers_size++;
-    update_newline_record();
+    buffers[curr_buffer]->depth = count_newline();
 }
 
 
@@ -86,7 +85,6 @@ void dealloc_all_buffers()
     for (int i = 0; i < buffers_size; i++)
     {
         free(buffers[i]->text);
-        free(buffers[i]->newline_record);
         free(buffers[i]);
     }
 
@@ -103,10 +101,28 @@ void update_file(WINDOW* win)
     fclose(fd);
 }
 
+// blanket function to catch memory allocation failures
 void mem_panic()
 {
     dealloc_all_buffers();
     endwin();
     printf("panic: insufficient memory");
     exit(EXIT_FAILURE);
+}
+
+// counts the number of newline chars in the buffer to set depth var
+uint count_newline()
+{
+    char* curr = buffers[curr_buffer]->text;
+    uint counter = 0;
+
+    while(*curr != '\0')
+    {
+        if (*curr == '\n')
+            counter++;
+
+        curr++;
+    }
+
+    return counter;
 }
