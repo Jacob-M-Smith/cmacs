@@ -13,7 +13,6 @@ typedef struct buffer
     uint   size;           // amount of memory allocated to the buffer
     uint   depth;          // number of newline characters in a file   
     char*  text;
-    char** newline_record; // contains the starting char of every newline
 } buffer;
 
 // buffer management variables
@@ -26,13 +25,14 @@ void     dealloc_all_buffers();
 void     open_file(char*);
 void     update_file();
 void     mem_panic();
+uint     count_newline();
 
 // buffer.c (handle buffer management)
 int      add_char_to_buffer(char);
 int      process_keystroke(int);
 int      remove_char_from_buffer(int);
 size_t   strline(const char*);
-void     update_newline_record();
+//void     update_newline_record();
 
 // cmacs.c is driver
 #endif
