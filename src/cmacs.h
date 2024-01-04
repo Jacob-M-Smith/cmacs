@@ -32,6 +32,7 @@ int      add_char_to_buffer(char);
 int      process_keystroke(int);
 int      remove_char_from_buffer(int);
 size_t   strline(const char*);
+int      position_search();
 //void     update_newline_record();
 
 // cmacs.c is driver
