@@ -239,6 +239,10 @@ int process_keystroke(int key)
                 remove_char_from_buffer(DELETE);
                 update_display = 1;
             case CTRL('h'):
+                remove_char_from_buffer(BCKSPCE);
+                update_display = 1;
+                buf->pos--;
+                x--;
                 break;
             case CTRL('j'):
                 add_char_to_buffer('\n');
@@ -379,7 +383,7 @@ int process_keystroke2(buffer* buf, int key)
         update_display = 1;
         buf->pos--;
         x--;
-    }
+    }   
     else if (key == CTRL('j'))
     {
         add_char_to_buffer(buf, '\n');
