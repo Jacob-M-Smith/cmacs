@@ -239,7 +239,8 @@ int process_keystroke(int key)
                 move(y, x);
                 break;
             case CTRL('d'):
-                break;
+                remove_char_from_buffer(DELETE);
+                update_display = 1;
             case CTRL('h'):
                 break;
             case CTRL('j'):
@@ -306,41 +307,6 @@ int position_search()
         if (*curr == '\n')
         {
             y++;
-            x = 0;
-        }
-        else
-        {
-            x++;
-        }
-        buf->pos++;
-        curr++;
-    }
-}
-
-int reverse_postiion_search()
-{
-    int x_target, y_target, x, y;
-    getyx(stdscr, y, x);
-    x_target = x;
-    y_target = y - 1;
-
-    buffer* buf = buffers[curr_buffer];
-    char* curr = &(buf->text[buf->pos]);
-
-    if (y == 0)
-        return -1;
-
-    for (;;)
-    {
-        if (y == y_target && x == x_target)
-            return x;
-
-        if (y == y_target && x == 0)
-            return x;
-
-        if (*curr == '\n')
-        {
-            y--;
             x = 0;
         }
         else
