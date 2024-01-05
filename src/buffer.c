@@ -204,6 +204,7 @@ int process_keystroke(int key)
                         break;
                     else 
                     {
+                        update_line_count();
                         y--;
                         x = buf->lines->lens[y];
                         move(y, x);
@@ -223,22 +224,27 @@ int process_keystroke(int key)
                 if (y == 0)
                     break;
                 y--;
+                update_line_count();
                 if (buf->lines->lens[y] < x)
                 {
-                    buf->pos -= x;
+                    buf->pos -= x + 1;
                     x = buf->lines->lens[y];
                 }
                 else
                 {
-                    buf->pos -= (x + (buf->lines->lens[y] - x) + 1);                    
+                    buf->pos -= (x + (buf->lines->lens[y] - x + 1));  
                 }
                 
                 move(y, x);
                 break;
             case CTRL('d'):
+                if (buf->text[buf->pos] == '\0')
+                    break;
                 remove_char_from_buffer(DELETE);
                 update_display = 1;
             case CTRL('h'):
+                if (buf->pos == 0)
+                    break;
                 remove_char_from_buffer(BCKSPCE);
                 update_display = 1;
                 buf->pos--;
