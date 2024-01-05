@@ -6,6 +6,8 @@
 #define BCKSPCE  127
 #define TAB      9
 
+#define DELETE   0        // constant adds readability to remove char function 
+
 typedef struct line       // holds information about lines
 {                         // makes navigation keys easier
     uint size;
