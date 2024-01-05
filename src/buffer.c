@@ -233,6 +233,15 @@ int process_keystroke(int key)
                 buf->depth++;
                 update_display = 1;                
                 break;
+            case TAB:
+                add_char_to_buffer(' ');
+                add_char_to_buffer(' ');
+                add_char_to_buffer(' ');
+                add_char_to_buffer(' ');
+                buf->pos += 4;
+                x += 4;
+                update_display = 1;
+                break;            
             default:
                 return 0;            
         }
