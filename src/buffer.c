@@ -43,7 +43,7 @@ int remove_char_from_buffer(int delete)
     int buf_len = strlen(buf->text);
     int pos = buf->pos;
 
-    if (delete)  // remove current char
+    if (!delete)  // remove current char
     {
         if (pos == buf_len)
             return 1;
@@ -159,9 +159,6 @@ size_t strline (const char *str)
     }
 }
 
-/* for adding more cases
-  case CTRL('f'):
-  break;*/
 int process_keystroke(int key)
 {
     int y, x, maxy, maxx;
