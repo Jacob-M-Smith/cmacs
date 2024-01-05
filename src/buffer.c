@@ -207,7 +207,10 @@ int process_keystroke(int key)
                         break;
                     else 
                     {
-                        // not sure what to do here
+                        y--;
+                        x = buf->lines->lens[y];
+                        move(y, x);
+                        buf->pos--;
                     }
                 }
                 break;
@@ -233,7 +236,7 @@ int process_keystroke(int key)
                 buf->depth++;
                 update_display = 1;                
                 break;
-            case TAB:
+            case TAB:  // this should probably not be here but it was convenient
                 add_char_to_buffer(' ');
                 add_char_to_buffer(' ');
                 add_char_to_buffer(' ');
