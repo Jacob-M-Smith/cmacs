@@ -43,6 +43,9 @@ int remove_char_from_buffer(int delete)
     int buf_len = strlen(buf->text);
     int pos = buf->pos;
 
+    if (buf->text[buf->pos] == '\n')
+        buf->depth--;
+
     if (!delete)  // remove current char
     {
         if (pos == buf_len)
@@ -213,12 +216,20 @@ int process_keystroke(int key)
                 }
                 break;
             case CTRL('n'):
-                x = position_search();
-                if (x)
+                if (y == buf->depth)
+                    break;
+                y++;
+                update_line_count();
+                if (buf->lines->lens[y] < x)   // next line is longer short than current x pos
                 {
-                    y += 1;
-                    move(y, x);
+                    buf->pos += (buf->lines->lens[y - 1] - x) + buf->lines->lens[y];
+                    x = buf->lines->lens[y];
                 }
+                else
+                {
+                    buf->pos += (buf->lines->lens[y - 1] - x) + x + 1;              
+                }
+                move(y, x);
                 break;
             case CTRL('p'):
                 if (y == 0)
@@ -243,7 +254,7 @@ int process_keystroke(int key)
                 remove_char_from_buffer(DELETE);
                 update_display = 1;
             case CTRL('h'):
-                if (buf->pos == 0)
+                if (buf->pos == '\0')
                     break;
                 remove_char_from_buffer(BCKSPCE);
                 update_display = 1;
