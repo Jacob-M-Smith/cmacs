@@ -36,7 +36,7 @@ int add_char_to_buffer(char character)
     }
 }
 
-// delete is a bool for direction 1 for delete, 0 for backspace
+// delete is a bool for direction false for delete, true for backspace
 int remove_char_from_buffer(int delete)
 {
     buffer* buf = buffers[curr_buffer];
@@ -46,7 +46,7 @@ int remove_char_from_buffer(int delete)
     if (buf->text[buf->pos] == '\n')
         buf->depth--;
 
-    if (!delete)  // remove current char
+    if (delete == 0)  // remove current char
     {
         if (pos == buf_len)
             return 1;
@@ -253,6 +253,8 @@ int process_keystroke(int key)
                     break;
                 remove_char_from_buffer(DELETE);
                 update_display = 1;
+                x++;
+                buf->pos++;
             case CTRL('h'):
                 if (buf->pos == '\0')
                     break;
