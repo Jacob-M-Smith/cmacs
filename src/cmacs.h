@@ -41,10 +41,7 @@ void     update_line_count();
 int      add_char_to_buffer(char);
 int      process_keystroke(int);
 int      remove_char_from_buffer(int);
-size_t   strline(const char*);
-int      position_search();
-int      reverse_position_search();
-//void     update_newline_record();
+size_t   strline(const char*);;
 
 // cmacs.c is driver
 #endif
