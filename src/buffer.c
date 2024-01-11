@@ -259,12 +259,23 @@ int process_keystroke(int key)
                 x++;
                 buf->pos++;
             case CTRL('h'):
-                if (buf->pos == '\0')
+                if (buf->pos == 0)
                     break;
-                remove_char_from_buffer(BCKSPCE);
+                if (buf->text[buf->pos - 1] != '\n')
+                {
+                    remove_char_from_buffer(BCKSPCE);
+                    buf->pos--;
+                    x--;
+                }
+                else
+                {
+                    remove_char_from_buffer(BCKSPCE);
+                    buf->pos--;
+                    update_line_count();
+                    y--;
+                    x = buf->lines->lens[y];
+                }
                 update_display = 1;
-                buf->pos--;
-                x--;
                 break;
             case CTRL('j'):
                 add_char_to_buffer('\n');
