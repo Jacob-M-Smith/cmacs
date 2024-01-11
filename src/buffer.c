@@ -175,6 +175,9 @@ int process_keystroke(int key)
     getyx(stdscr, y, x);
     getmaxyx(stdscr, maxy, maxx);
 
+    if (key == BCKSPCE)
+        key = CTRL('h');
+
     if (key < 0x1f)  // key is a control key
     {
         switch(key)
