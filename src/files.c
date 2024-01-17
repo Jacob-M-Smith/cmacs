@@ -46,14 +46,11 @@ void open_file(char* fname)
         return;
     }
 
-    const size_t ret = fread(text, file_size, 1, fd);
-    if (ret != file_size)
-        text = "\0";
+    const size_t ret = fread(text, sizeof(char), file_size, fd);
+    if (ret*sizeof(char) != file_size)  // prevents malloc assertion failure on read failure
+        text = "\0";       // also breaks everything    
 
     fclose(fd);
-
-    if (text == NULL)
-        text = "\0";
 
     if (buffers_size == 0)
     {
@@ -84,7 +81,7 @@ void open_file(char* fname)
     // buffer defaults
     buffers[curr_buffer]->fname = fname;
     buffers[curr_buffer]->pos = 0;
-    buffers[curr_buffer]->size = strlen(text);
+    buffers[curr_buffer]->size = ret;
     buffers[curr_buffer]->text = text;
     int d = count_newline();
     buffers[curr_buffer]->depth = d;
@@ -102,6 +99,9 @@ void dealloc_all_buffers()
 {
     for (int i = 0; i < buffers_size; i++)
     {
+        if (!buffers[i])
+            break;
+
         if (buffers[i]->text)
             free(buffers[i]->text);
 
