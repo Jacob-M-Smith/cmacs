@@ -48,7 +48,11 @@ void open_file(char* fname)
 
     const size_t ret = fread(text, sizeof(char), file_size, fd);
     if ((ret + 1) * sizeof(char) != file_size)  // prevents malloc assertion failure on read failure
-        text = "\0";                            // also breaks everything    
+    {
+        free(text);
+        fclose(fd);
+        exit(0);
+    }
 
     fclose(fd);
 
