@@ -36,7 +36,7 @@ void open_file(char* fname)
         return;
     }
 
-    file_size = *&stat_buffer.st_size;
+    file_size = *&stat_buffer.st_size + 1024;
     char* text;
 
     if ((text = (char*)malloc(sizeof(char) * file_size)) == NULL)
@@ -46,8 +46,14 @@ void open_file(char* fname)
         return;
     }
 
-    fread(text, file_size, 1, fd);
+    const size_t ret = fread(text, file_size, 1, fd);
+    if (ret != file_size)
+        text = "\0";
+
     fclose(fd);
+
+    if (text == NULL)
+        text = "\0";
 
     if (buffers_size == 0)
     {
@@ -61,6 +67,7 @@ void open_file(char* fname)
     }
     else
     {
+        // REALLOC NEEDS TO BE STORED IN TEMP VARIABLE
         if ((realloc(buffers, sizeof(buffer*) * (buffers_size + 1))) == NULL)
         {
             printf("failed to grow size of buffer list\n");
@@ -95,7 +102,15 @@ void dealloc_all_buffers()
 {
     for (int i = 0; i < buffers_size; i++)
     {
-        free(buffers[i]->text);
+        if (buffers[i]->text)
+            free(buffers[i]->text);
+
+        if (buffers[i]->lines)
+        {
+            if (buffers[i]->lines->lens)
+                free(buffers[i]->lines->lens);
+            free(buffers[i]->lines);
+        }            
         free(buffers[i]);
     }
 
