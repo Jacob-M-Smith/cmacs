@@ -46,7 +46,7 @@ int remove_char_from_buffer(int delete)
     if (buf->text[buf->pos] == '\n')
         buf->depth--;
 
-    if (delete)  // remove current char
+    if (!delete)  // remove current char
     {
         memcpy(buf->text + pos, buf->text + pos + 1, (buf->size - pos) * sizeof(char));
     }
@@ -256,7 +256,7 @@ int process_keystroke(int key)
                     break;
                 if (buf->text[buf->pos - 1] != '\n')
                 {
-                    remove_char_from_buffer(!DELETE);
+                    remove_char_from_buffer(DELETE);
                     buf->pos--;
                     x--;
                 }
