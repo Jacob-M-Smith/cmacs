@@ -46,15 +46,9 @@ int remove_char_from_buffer(int delete)
     if (buf->text[buf->pos] == '\n')
         buf->depth--;
 
-    if (delete == 0)  // remove current char
+    if (delete)  // remove current char
     {
-        if (pos == buf_len)
-            return 1;
-        else
-        {
-            memcpy(buf->text + pos, buf->text + pos + 1, (buf->size - pos) * sizeof(char));
-        }           
-
+        memcpy(buf->text + pos, buf->text + pos + 1, (buf->size - pos) * sizeof(char));
     }
     else         // remove previous char
     {
@@ -256,14 +250,13 @@ int process_keystroke(int key)
                     break;
                 remove_char_from_buffer(DELETE);
                 update_display = 1;
-                x++;
-                buf->pos++;
+                break;
             case CTRL('h'):
                 if (buf->pos == 0)
                     break;
                 if (buf->text[buf->pos - 1] != '\n')
                 {
-                    remove_char_from_buffer(BCKSPCE);
+                    remove_char_from_buffer(!DELETE);
                     buf->pos--;
                     x--;
                 }
