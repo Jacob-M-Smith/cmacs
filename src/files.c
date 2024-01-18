@@ -40,7 +40,7 @@ void open_file(char* fname)
     char* text;
 
     if ((text = (char*)malloc(sizeof(char) * file_size)) == NULL)
-    {
+   {
         printf("failed to allocate memory\n");
         fclose(fd);
         return;
@@ -49,10 +49,10 @@ void open_file(char* fname)
     const size_t ret = fread(text, sizeof(char), file_size, fd);
     if ((ret + 1) * sizeof(char) != file_size)  // prevents malloc assertion failure on read failure
     {
-        free(text);
+        text = "\0";
         fclose(fd);
-        exit(0);
-    }
+        mem_panic();
+     }
 
     fclose(fd);
 
@@ -87,7 +87,7 @@ void open_file(char* fname)
     buffers[curr_buffer]->pos = 0;
     buffers[curr_buffer]->size = strlen(text);
     buffers[curr_buffer]->text = text;
-    int d = count_newline();
+    int d = count_newline() + 1;
     buffers[curr_buffer]->depth = d;
 
     // line manager
@@ -103,18 +103,9 @@ void dealloc_all_buffers()
 {
     for (int i = 0; i < buffers_size; i++)
     {
-        if (!buffers[i])
-            break;
-
-        if (buffers[i]->text)
-            free(buffers[i]->text);
-
-        if (buffers[i]->lines)
-        {
-            if (buffers[i]->lines->lens)
-                free(buffers[i]->lines->lens);
-            free(buffers[i]->lines);
-        }            
+        free(buffers[i]->text);
+        free(buffers[i]->lines->lens);
+        free(buffers[i]->lines);
         free(buffers[i]);
     }
 
@@ -166,15 +157,16 @@ void update_line_count()
     // realloc on size dif
     if (buf->depth != lines->size)
     {
+        // SAME REALLOC TEMP CHECK
         if ((realloc(lines->lens, sizeof(int) * buf->depth)) == NULL)
             mem_panic();
         lines->size = buf->depth;
     }
 
     int pos = 0;
-    for (int i = 0; i <= buf->depth; i++)
+    for (int i = 0; i < buf->depth; i++)
     {
-        if (i == buf->depth)
+        if (i == buf->depth - 1)
         {
             lines->lens[i] = strlen(curr);
         }
