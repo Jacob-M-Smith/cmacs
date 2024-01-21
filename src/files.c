@@ -37,10 +37,10 @@ void open_file(char* fname)
     }
 
     file_size = *&stat_buffer.st_size + 1;
-    char* text;
+    char* text = (char*)malloc(sizeof(char) * file_size);
 
-    if ((text = (char*)malloc(sizeof(char) * file_size)) == NULL)
-   {
+    if (!text)
+    {
         printf("failed to allocate memory\n");
         fclose(fd);
         return;
@@ -77,6 +77,8 @@ void open_file(char* fname)
         }
     }
     
+
+    // THERE IS A WHOLE LOAD OF HORSESHIT BELOW HERE
     // allocate new buffer 
     buffers[buffers_size] = (buffer*)malloc(sizeof(buffer));
     curr_buffer = buffers_size;
@@ -85,7 +87,7 @@ void open_file(char* fname)
     // buffer defaults
     buffers[curr_buffer]->fname = fname;
     buffers[curr_buffer]->pos = 0;
-    buffers[curr_buffer]->size = strlen(text);
+    buffers[curr_buffer]->size = file_size - 1;
     buffers[curr_buffer]->text = text;
     int d = count_newline() + 1;
     buffers[curr_buffer]->depth = d;
@@ -103,10 +105,14 @@ void dealloc_all_buffers()
 {
     for (int i = 0; i < buffers_size; i++)
     {
-        free(buffers[i]->text);
-        free(buffers[i]->lines->lens);
-        free(buffers[i]->lines);
-        free(buffers[i]);
+        if (buffers[i]->text)
+            free(buffers[i]->text);
+        if (buffers[i]->lines->lens)
+            free(buffers[i]->lines->lens);
+        if (buffers[i]->lines)
+            free(buffers[i]->lines);
+        if (buffers[i])
+            free(buffers[i]);
     }
 
     free(buffers);
