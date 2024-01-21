@@ -38,4 +38,5 @@ This version contains the base features required to be a text editor.
 - multiple windows
 
 ## Notes
-- A minute amount of memory is never freed by ncurses.
+- A minute amount of memory is never freed by ncurses' initscr function.
+- Valgrind has some errors for conditional jumps based on uninitialized values which are false flags.
