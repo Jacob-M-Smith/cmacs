@@ -219,7 +219,7 @@ int process_keystroke(int key)
                     break;
                 y++;
                 update_line_count();
-                if (buf->lines->lens[y] < x)   // next line is longer short than current x pos
+                if (buf->lines->lens[y] < x) 
                 {
                     buf->pos += (buf->lines->lens[y - 1] - x) + buf->lines->lens[y] + 1;
                     x = buf->lines->lens[y];
@@ -246,6 +246,16 @@ int process_keystroke(int key)
                 }
                 
                 move(y, x);
+                break;
+            case CTRL('e'):
+                update_line_count();
+                if (x == buf->lines->lens[y])
+                    break;
+                buf->pos += (buf->lines->lens[y] - x);
+                x = buf->lines->lens[y];
+                move(y, x);
+                break;
+            case CTRL('a'):
                 break;
             case CTRL('d'):
                 if (buf->text[buf->pos] == '\0')
