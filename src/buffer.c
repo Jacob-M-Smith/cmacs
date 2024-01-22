@@ -37,21 +37,22 @@ int add_char_to_buffer(char character)
 }
 
 // delete is a bool for direction false for delete, true for backspace
-int remove_char_from_buffer(int delete)
+int remove_char_from_buffer(int backspace)
 {
     buffer* buf = buffers[curr_buffer];
     int buf_len = strlen(buf->text);
     int pos = buf->pos;
 
-    if (buf->text[buf->pos] == '\n')
-        buf->depth--;
-
-    if (!delete)  // remove current char
+    if (!backspace)  // remove current char
     {
+        if (buf->text[buf->pos] == '\n')
+            buf->depth--;
         memcpy(buf->text + pos, buf->text + pos + 1, (buf->size - pos) * sizeof(char));
     }
     else         // remove previous char
     {
+        if (buf->text[buf->pos - 1] == '\n')
+            buf->depth--;
         if (pos == buf_len - 1)
         {
             buf->text[pos - 1] = '\0';
@@ -61,6 +62,7 @@ int remove_char_from_buffer(int delete)
             memcpy(buf->text + pos - 1, buf->text + pos, (buf->size - pos) * sizeof(char));
         }
     }
+    buf->text[buf_len - 1] = '\0';
     return 1;
 }
 
@@ -213,7 +215,7 @@ int process_keystroke(int key)
                 }
                 break;
             case CTRL('n'):
-                if (y == buf->depth)
+                if (y == buf->depth - 1)
                     break;
                 y++;
                 update_line_count();
@@ -256,7 +258,7 @@ int process_keystroke(int key)
                     break;
                 if (buf->text[buf->pos - 1] != '\n')
                 {
-                    remove_char_from_buffer(DELETE);
+                    remove_char_from_buffer(BCKSPCE);
                     buf->pos--;
                     x--;
                 }
@@ -264,7 +266,6 @@ int process_keystroke(int key)
                 {
                     remove_char_from_buffer(BCKSPCE);
                     buf->pos--;
-                    update_line_count();
                     y--;
                     x = buf->lines->lens[y];
                 }
