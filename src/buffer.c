@@ -221,7 +221,7 @@ int process_keystroke(int key)
                 update_line_count();
                 if (buf->lines->lens[y] < x)   // next line is longer short than current x pos
                 {
-                    buf->pos += (buf->lines->lens[y - 1] - x) + buf->lines->lens[y];
+                    buf->pos += (buf->lines->lens[y - 1] - x) + buf->lines->lens[y] + 1;
                     x = buf->lines->lens[y];
                 }
                 else
