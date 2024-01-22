@@ -18,7 +18,7 @@ int main (int argc, char** argv)
     raw();
 
     clear();
-    printw(buffers[curr_buffer]->text);
+    addstr(buffers[curr_buffer]->text);
     refresh();
 
     move(0, 0);
@@ -48,9 +48,9 @@ int main (int argc, char** argv)
 
         refresh();
     }
-    
-    endwin();
 
+    clear();    
+    endwin();
     dealloc_all_buffers();
 
     return 1;

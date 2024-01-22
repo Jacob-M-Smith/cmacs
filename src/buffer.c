@@ -303,7 +303,7 @@ int process_keystroke(int key)
     if (update_display)
     {
         clear();
-        printw(buf->text);
+        addstr(buf->text);
         move(y, x);
     }
 }
