@@ -255,7 +255,12 @@ int process_keystroke(int key)
                 x = buf->lines->lens[y];
                 move(y, x);
                 break;
-            case CTRL('a'):
+            case CTRL('a'):                
+                if (x == 0)
+                    break;
+                buf->pos -= x;
+                x = 0;
+                move(y, x);
                 break;
             case CTRL('d'):
                 if (buf->text[buf->pos] == '\0')
