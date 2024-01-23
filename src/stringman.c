@@ -92,3 +92,22 @@ size_t strline (const char *str)
 	}
     }
 }
+
+// gets the address of the first character in the line specified by linenum
+char* lineaddr(uint linenum)
+{
+    buffer* buf = buffers[curr_buffer];
+    if (linenum > buf->depth)       // bounds check
+        return NULL;
+
+    update_line_count();
+
+    if (linenum == 0)
+        return buf->text;
+
+    uint curr_len = 0;
+    for (uint i = 0; i < linenum; i++)
+        curr_len += buf->lines->lens[i];
+
+    return buf->text + (curr_len + 1 * sizeof(char));
+}

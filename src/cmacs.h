@@ -46,6 +46,9 @@ int      remove_char_from_buffer(int);
 
 //stringman.c (functions to handle string manipulation)
 size_t   strline(const char*);
+char*    lineaddr(uint);
+
+//memman.c 
 
 // cmacs.c is driver
 #endif
