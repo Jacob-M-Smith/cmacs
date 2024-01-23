@@ -99,25 +99,7 @@ void open_file(char* fname)
     line* lines = (buffers[curr_buffer]->lines);
     lines->size = d;
     lines->lens = (int*)malloc(sizeof(int) * d);
-    update_line_count();
-}
-
-
-void dealloc_all_buffers()
-{
-    for (int i = 0; i < buffers_size; i++)
-    {
-        if (buffers[i]->text)
-            free(buffers[i]->text);
-        if (buffers[i]->lines->lens)
-            free(buffers[i]->lines->lens);
-        if (buffers[i]->lines)
-            free(buffers[i]->lines);
-        if (buffers[i])
-            free(buffers[i]);
-    }
-
-    free(buffers);
+    update_line_count();;
 }
 
 void update_file(WINDOW* win)
@@ -128,15 +110,6 @@ void update_file(WINDOW* win)
     fd = fopen(fname, "w");
     fwrite(text, strlen(text), 1, fd);
     fclose(fd);
-}
-
-// blanket function to catch memory allocation failures
-void mem_panic()
-{
-    dealloc_all_buffers();
-    endwin();
-    printf("panic: insufficient memory");
-    exit(EXIT_FAILURE);
 }
 
 // counts the number of newline chars in the buffer to set depth var

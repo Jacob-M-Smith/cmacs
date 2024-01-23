@@ -32,10 +32,8 @@ extern uint buffers_size;
 extern uint curr_buffer;
 
 // files.c (functions to handle file input and output)
-void     dealloc_all_buffers();
 void     open_file(char*);
 void     update_file();
-void     mem_panic();
 uint     count_newline();
 void     update_line_count();
 
@@ -48,7 +46,9 @@ int      remove_char_from_buffer(int);
 size_t   strline(const char*);
 char*    lineaddr(uint);
 
-//memman.c 
+//memman.c
+void     mem_panic();
+void     dealloc_all_buffers();
 
 // cmacs.c is driver
 #endif
