@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <malloc.h>
 #include <string.h>
 #include <ncurses.h>
 #include "cmacs.h"
@@ -226,7 +225,7 @@ int process_keystroke(int key)
     if (update_display)
     {
         clear();
-        addstr(buf->text);
+        addstr(buf->topline);
         move(y, x);
     }
 }
