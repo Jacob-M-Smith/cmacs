@@ -1,9 +1,5 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
-#include <errno.h>
-#include <sys/stat.h>
-#include <string.h>
 #include "cmacs.h"
 
 int main (int argc, char** argv)
