@@ -16,12 +16,14 @@ typedef struct line       // holds information about lines
 
 typedef struct buffer
 {
-    char*  fname;  
+    char*  fname;          // file name
     uint   pos;            // position of cursor in linear buffer
     uint   size;           // amount of memory allocated to the buffer
     uint   depth;          // number of newline characters in a file   
     line*  lines;          // structure managing line lengths records
-    char*  text;
+    uint   toplinenum;     // line number used for scrolling
+    char*  topline;        // an address within the bounds of text where display should start
+    char*  text;           // string holding the contents of the file
 } buffer;
 
 // buffer management variables
@@ -29,7 +31,7 @@ extern buffer** buffers;
 extern uint buffers_size;
 extern uint curr_buffer;
 
-// files.c (handles file input and output)
+// files.c (functions to handle file input and output)
 void     dealloc_all_buffers();
 void     open_file(char*);
 void     update_file();
@@ -37,11 +39,13 @@ void     mem_panic();
 uint     count_newline();
 void     update_line_count();
 
-// buffer.c (handle buffer management)
+// buffer.c (functions to handle buffer management)
 int      add_char_to_buffer(char);
 int      process_keystroke(int);
 int      remove_char_from_buffer(int);
-size_t   strline(const char*);;
+
+//stringman.c (functions to handle string manipulation)
+size_t   strline(const char*);
 
 // cmacs.c is driver
 #endif
