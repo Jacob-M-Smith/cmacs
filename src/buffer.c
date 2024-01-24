@@ -123,7 +123,9 @@ int process_keystroke(int key)
                 break;
             case CTRL('n'):
                 if (y == buf->depth - 1)
+                {
                     break;
+                }
                 y++;
                 update_line_count();
                 if (buf->lines->lens[y] < x) 
@@ -140,24 +142,36 @@ int process_keystroke(int key)
             case CTRL('p'):
                 if (y == 0)
                 {
-//                    if ()
+                    if (buf->line_num == 0)
+                        break;
+                    buf->line_num--;
+                    buf->curr_depth--;
+                    buf->disp_start = lineaddr(buf->curr_depth);
+                        
+                    update_line_count();
+                    if (buf->lines->lens[buf->line_num] < x)
+                    {
+                        buf->pos -= x + 1;
+                        x = buf->lines->lens[buf->line_num];
+                        update_display = 1;
+                        break;
+                    }
+                    buf->pos -= (x + (buf->lines->lens[buf->line_num] - x + 1));  
+                    update_display = 1;
                     break;
                 }
-
                 y--;
                 update_line_count();
-                if (buf->lines->lens[y] < x)
+                if (buf->lines->lens[buf->line_num] < x)
                 {
                     buf->pos -= x + 1;
-                    x = buf->lines->lens[y];
+                    x = buf->lines->lens[buf->line_num];
+                    update_display = 1;
+                    break;
                 }
-                else
-                {
-                    buf->pos -= (x + (buf->lines->lens[y] - x + 1));  
-                }
-                
-                move(y, x);
-                break;
+                buf->pos -= (x + (buf->lines->lens[buf->line_num] - x + 1));  
+                update_display = 1;
+                break;                
             case CTRL('e'):
                 update_line_count();
                 if (x == buf->lines->lens[y])
@@ -229,7 +243,7 @@ int process_keystroke(int key)
     if (update_display)
     {
         clear();
-        addstr(buf->dispstart);
+        addstr(buf->disp_start);
         move(y, x);
     }
 }
