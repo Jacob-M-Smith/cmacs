@@ -21,8 +21,9 @@ typedef struct buffer
     uint   size;           // amount of memory allocated to the buffer
     uint   depth;          // number of newline characters in a file   
     line*  lines;          // structure managing line lengths records
-    uint   currdepth;      // meta data used to track earliest line displayed in buffer
-    char*  dispstart;      // an address within the bounds of text where display should start
+    uint   line_num;       // the line number where the cursor currently resides in the buffer
+    uint   curr_depth;      // meta data used to track earliest line in buffer to be displayed
+    char*  disp_start;      // an address within the bounds of text where display should start
     char*  text;           // string holding the contents of the file
 } buffer;
 
