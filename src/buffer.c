@@ -11,7 +11,7 @@ int add_char_to_buffer(char character)
     int buffer_size = buf->size;
     int pos = buf->pos;
 
-    if ((new_text_len - 1) >= buffer_size)
+    if (new_text_len >= buffer_size)
     {
         if ((buf->text = (char*)realloc(buf->text, buffer_size + 1024)) == NULL)
         {
@@ -68,8 +68,8 @@ int remove_char_from_buffer(int backspace)
 
 int process_keystroke(int key)
 {
-    int y, x, maxy, maxx;
-    int update_display = 0;                // set to 1 when screen needs to be redrawn
+    uint y, x, maxy, maxx;
+    uint update_display = 0;                // set to 1 when screen needs to be redrawn
 
     buffer* buf = buffers[curr_buffer];
     char curr = buf->text[buf->pos];                       
@@ -126,23 +126,29 @@ int process_keystroke(int key)
                 break;
             case CTRL('n'):
                 if (y == buf->depth - 1)
-                {
                     break;
-                }
-                y++;
-                update_line_count();
-                buf->line_num++;
-                if (buf->lines->lens[y] < x) 
+                if (y == maxy)
                 {
-                    buf->pos += (buf->lines->lens[y - 1] - x) + buf->lines->lens[y] + 1;
-                    x = buf->lines->lens[y];
+                    if (buf->line_num == buf->depth - 1) // EOF
+                        break;
+                    buf->curr_depth++;
+                    buf->disp_start = lineaddr(buf->curr_depth);
+                    update_display = 1;
                 }
                 else
+                    y++;
+                update_line_count();
+                buf->line_num++;
+                if (buf->lines->lens[buf->line_num] < x) 
                 {
-                    buf->pos += (buf->lines->lens[y - 1] - x) + x + 1;              
+                    buf->pos += (buf->lines->lens[buf->line_num - 1] - x) + buf->lines->lens[buf->line_num] + 1;
+                    x = buf->lines->lens[buf->line_num];
+                    move(y, x);
+                    break;
                 }
+                buf->pos += (buf->lines->lens[buf->line_num - 1] - x) + x + 1;
                 move(y, x);
-                break;
+                break;               
             case CTRL('p'):
                 if (y == 0)
                 {
