@@ -18,11 +18,11 @@ This version contains the base features required to be a text editor.
 - Return/Enter functionality (done)
 
 *version 2*
-- More advanced movement key modifiers
-  - ctrl + e (end of line)
-  - ctrl + a (start of line)
+- More advanced movement key modifiers (done)
+  - ctrl + e (end of line) (done)
+  - ctrl + a (start of line) (done)
 - Multiple Buffers and Files
-- Scrolling
+- Scrolling (done)
 - Copy, Cut and Paste
   - Text Highlighting
   - Mark setting
@@ -40,3 +40,4 @@ This version contains the base features required to be a text editor.
 ## Notes
 - A minute amount of memory is never freed by ncurses' initscr function.
 - Valgrind has some errors for conditional jumps based on uninitialized values which are false flags.
+- Scrolling can sometimes stick towards the end of files (not sure why yet)
