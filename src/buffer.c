@@ -139,7 +139,11 @@ int process_keystroke(int key)
                 break;
             case CTRL('p'):
                 if (y == 0)
+                {
+//                    if ()
                     break;
+                }
+
                 y--;
                 update_line_count();
                 if (buf->lines->lens[y] < x)
@@ -225,7 +229,7 @@ int process_keystroke(int key)
     if (update_display)
     {
         clear();
-        addstr(buf->topline);
+        addstr(buf->dispstart);
         move(y, x);
     }
 }

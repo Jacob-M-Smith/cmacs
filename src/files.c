@@ -88,8 +88,8 @@ void open_file(char* fname)
     buffers[curr_buffer]->pos = 0;
     buffers[curr_buffer]->size = file_size - 1;
     buffers[curr_buffer]->text = text;
-    buffers[curr_buffer]->topline = text;
-    buffers[curr_buffer]->toplinenum = 0;
+    buffers[curr_buffer]->dispstart = text;
+    buffers[curr_buffer]->currdepth = 0;
     int d = count_newline() + 1;
     buffers[curr_buffer]->depth = d;
 
