@@ -127,7 +127,7 @@ int process_keystroke(int key)
             case CTRL('n'):
                 if (y == buf->depth - 1)
                     break;
-                if (y == maxy)
+                if (y == maxy - 1)
                 {
                     if (buf->line_num == buf->depth - 1) // EOF
                         break;
