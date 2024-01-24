@@ -35,7 +35,7 @@ void open_file(char* fname)
         return;
     }
 
-    file_size = *&stat_buffer.st_size + 1;
+    file_size = *&stat_buffer.st_size + 1024;
     char* text = (char*)malloc(sizeof(char) * file_size);
 
     if (!text)
@@ -46,12 +46,12 @@ void open_file(char* fname)
     }
 
     const size_t ret = fread(text, sizeof(char), file_size, fd);
-    if ((ret + 1) * sizeof(char) != file_size)  // prevents malloc assertion failure on read failure
+/*    if ((ret + 1) * sizeof(char) != file_size)  // prevents malloc assertion failure on read failure
     {
         text = "\0";
         fclose(fd);
         mem_panic();
-     }
+        }*/
 
     fclose(fd);
 
@@ -76,8 +76,6 @@ void open_file(char* fname)
         }
     }
     
-
-    // THERE IS A WHOLE LOAD OF HORSESHIT BELOW HERE
     // allocate new buffer 
     buffers[buffers_size] = (buffer*)malloc(sizeof(buffer));
     curr_buffer = buffers_size;
@@ -86,7 +84,7 @@ void open_file(char* fname)
     // buffer defaults
     buffers[curr_buffer]->fname = fname;
     buffers[curr_buffer]->pos = 0;
-    buffers[curr_buffer]->size = file_size - 1;
+    buffers[curr_buffer]->size = file_size;
     buffers[curr_buffer]->line_num = 0;
     buffers[curr_buffer]->text = text;
     buffers[curr_buffer]->disp_start = text;
