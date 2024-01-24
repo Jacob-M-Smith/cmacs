@@ -18,6 +18,7 @@ int add_char_to_buffer(char character)
             printf("realloc failed\n");
             return 0;
         }
+        buf->disp_start = lineaddr(buf->line_num);
         buf->size += 1024;
     }
 
@@ -128,6 +129,7 @@ int process_keystroke(int key)
                 }
                 y++;
                 update_line_count();
+                buf->line_num++;
                 if (buf->lines->lens[y] < x) 
                 {
                     buf->pos += (buf->lines->lens[y - 1] - x) + buf->lines->lens[y] + 1;
@@ -149,27 +151,28 @@ int process_keystroke(int key)
                     buf->disp_start = lineaddr(buf->curr_depth);
                         
                     update_line_count();
-                    if (buf->lines->lens[buf->line_num] < x)
+                    if (buf->lines->lens[buf->line_num - 1] < x)
                     {
                         buf->pos -= x + 1;
-                        x = buf->lines->lens[buf->line_num];
+                        x = buf->lines->lens[buf->line_num - 1];
                         update_display = 1;
                         break;
                     }
-                    buf->pos -= (x + (buf->lines->lens[buf->line_num] - x + 1));  
+                    buf->pos -= (x + (buf->lines->lens[buf->line_num - 1] - x + 1));  
                     update_display = 1;
                     break;
                 }
                 y--;
                 update_line_count();
-                if (buf->lines->lens[buf->line_num] < x)
+                buf->line_num--;
+                if (buf->lines->lens[buf->line_num - 1] < x)
                 {
                     buf->pos -= x + 1;
-                    x = buf->lines->lens[buf->line_num];
+                    x = buf->lines->lens[buf->line_num - 1];
                     update_display = 1;
                     break;
                 }
-                buf->pos -= (x + (buf->lines->lens[buf->line_num] - x + 1));  
+                buf->pos -= (x + (buf->lines->lens[buf->line_num - 1] - x + 1));  
                 update_display = 1;
                 break;                
             case CTRL('e'):
