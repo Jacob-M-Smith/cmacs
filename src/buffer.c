@@ -92,6 +92,7 @@ int process_keystroke(int key)
                 if (curr_is_newl || (x == maxx - 1))
                 {
                     x = 0;
+                    buf->line_num++;
                     y++;
                 }
                 else
@@ -116,9 +117,10 @@ int process_keystroke(int key)
                     {
                         update_line_count();
                         y--;
+                        buf->line_num--;
+                        buf->pos--;
                         x = buf->lines->lens[y];
                         move(y, x);
-                        buf->pos--;
                     }
                 }
                 break;
@@ -144,35 +146,35 @@ int process_keystroke(int key)
             case CTRL('p'):
                 if (y == 0)
                 {
-                    if (buf->line_num == 0)
+                    if (buf->curr_depth == 0 || buf->line_num == 0)
                         break;
                     buf->line_num--;
                     buf->curr_depth--;
                     buf->disp_start = lineaddr(buf->curr_depth);
                         
                     update_line_count();
-                    if (buf->lines->lens[buf->line_num - 1] < x)
+                    if (buf->lines->lens[buf->line_num] < x)
                     {
                         buf->pos -= x + 1;
-                        x = buf->lines->lens[buf->line_num - 1];
+                        x = buf->lines->lens[buf->line_num];
                         update_display = 1;
                         break;
                     }
-                    buf->pos -= (x + (buf->lines->lens[buf->line_num - 1] - x + 1));  
+                    buf->pos -= (x + (buf->lines->lens[buf->line_num] - x + 1));  
                     update_display = 1;
                     break;
                 }
-                y--;
                 update_line_count();
+                y--;
                 buf->line_num--;
-                if (buf->lines->lens[buf->line_num - 1] < x)
+                if (buf->lines->lens[buf->line_num] < x)
                 {
                     buf->pos -= x + 1;
-                    x = buf->lines->lens[buf->line_num - 1];
+                    x = buf->lines->lens[buf->line_num];
                     update_display = 1;
                     break;
                 }
-                buf->pos -= (x + (buf->lines->lens[buf->line_num - 1] - x + 1));  
+                buf->pos -= (x + (buf->lines->lens[buf->line_num] - x + 1));  
                 update_display = 1;
                 break;                
             case CTRL('e'):
