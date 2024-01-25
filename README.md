@@ -21,10 +21,10 @@ This version contains the base features required to be a text editor.
 - More advanced movement key modifiers (done)
   - ctrl + e (end of line) (done)
   - ctrl + a (start of line) (done)
-- Multiple Buffers and Files
 - Scrolling (done)
 - center command
   - ctrl + l
+- Multiple Buffers and Files
 - Copy, Cut and Paste
   - Text Highlighting
   - Mark setting
