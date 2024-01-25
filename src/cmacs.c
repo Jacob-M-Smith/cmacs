@@ -4,6 +4,12 @@
 
 int main (int argc, char** argv)
 {
+    if (argc == 1)   // graceful failure when we have no file
+    {
+        printf("Please provide the name of the file to be read or created.\n");
+        printf("Example usage: cmacs my_file\n");
+        return 0;
+    }        
     char* fname = argv[1];
 
     buffers_size = 0;
