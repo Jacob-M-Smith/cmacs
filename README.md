@@ -23,6 +23,8 @@ This version contains the base features required to be a text editor.
   - ctrl + a (start of line) (done)
 - Multiple Buffers and Files
 - Scrolling (done)
+- center command
+  - ctrl + l
 - Copy, Cut and Paste
   - Text Highlighting
   - Mark setting
@@ -32,8 +34,6 @@ This version contains the base features required to be a text editor.
 - search
   - and replace
 - undo button
-- center command
-  - ctrl + l
 - syntax highlighting for C
 - multiple windows
 
