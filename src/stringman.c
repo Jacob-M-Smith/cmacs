@@ -107,7 +107,7 @@ char* lineaddr(uint linenum)
 
     uint curr_len = 0;
     for (uint i = 0; i < linenum; i++)
-        curr_len += buf->lines->lens[i];
+        curr_len += buf->lines->lens[i] + 1;
 
-    return buf->text + (curr_len + 1 * sizeof(char));
+    return buf->text + (curr_len * sizeof(char));
 }
