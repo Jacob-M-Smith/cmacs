@@ -185,10 +185,10 @@ int process_keystroke(int key)
                 break;                
             case CTRL('e'):
                 update_line_count();
-                if (x == buf->lines->lens[y])
+                if (x == buf->lines->lens[buf->line_num])
                     break;
-                buf->pos += (buf->lines->lens[y] - x);
-                x = buf->lines->lens[y];
+                buf->pos += (buf->lines->lens[buf->line_num] - x);
+                x = buf->lines->lens[buf->line_num];
                 move(y, x);
                 break;
             case CTRL('a'):                
