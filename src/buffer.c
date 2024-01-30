@@ -216,6 +216,7 @@ int process_keystroke(int key)
                 else
                 {
                     remove_char_from_buffer(BCKSPCE);
+                    buf->line_num--;
                     buf->pos--;
                     y--;
                     x = buf->lines->lens[y];
@@ -228,6 +229,7 @@ int process_keystroke(int key)
                 x = 0;
                 buf->pos++;
                 buf->depth++;
+                buf->line_num++;
                 update_display = 1;                
                 break;
             case TAB:  // this should probably not be here but it was convenient
