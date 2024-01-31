@@ -42,4 +42,4 @@ This version contains the base features required to be a text editor.
 - Valgrind has some errors for conditional jumps based on uninitialized values which are false flags.
 - Scrolling can sometimes stick towards the end of files (not sure why yet)
 - Pressing the enter at the end of the screen will not scroll automatically yet.
-- The end command has some eradic behavior. 
+- The end command has some eradic behavior. This is due to interactions with the tab character and it interaction with the lengths of lines.
