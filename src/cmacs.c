@@ -9,8 +9,18 @@ int main (int argc, char** argv)
         printf("Please provide the name of the file to be read or created.\n");
         printf("Example usage: cmacs my_file\n");
         return 0;
-    }        
+    }
+    
     char* fname = argv[1];
+    
+    // delete tabs from file
+    char com1[25];
+    char com2[25];
+    sprintf(com1, "expand %s > cmacs_temp_file", fname);
+    sprintf(com2, "cat cmacs_temp_file > %s", fname);    
+    system(com1);
+    system(com2);
+    system("rm cmacs_temp_file");
 
     buffers_size = 0;
     open_file(fname);
@@ -35,7 +45,7 @@ int main (int argc, char** argv)
             
             if (key == CTRL('s'))            
                 update_file();
-            else if (key == CTRL('c'))                            
+            else if (key == CTRL('c'))
                 break;
             else
             {
@@ -51,7 +61,7 @@ int main (int argc, char** argv)
         refresh();
     }
 
-    clear();    
+    clear();
     endwin();
     dealloc_all_buffers();
 
