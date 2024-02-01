@@ -5,8 +5,9 @@
 
 #define BCKSPCE  127
 #define TAB      9
-
 #define DELETE   0        // constant adds readability to remove char function 
+
+#define TAB_SIZE 8
 
 typedef struct line       // holds information about lines
 {                         // makes navigation keys easier
@@ -35,8 +36,6 @@ extern uint curr_buffer;
 // files.c (functions to handle file input and output)
 void     open_file(char*);
 void     update_file();
-uint     count_newline();
-void     update_line_count();
 
 // buffer.c (functions to handle buffer management)
 int      add_char_to_buffer(char);
@@ -46,6 +45,8 @@ int      remove_char_from_buffer(int);
 //stringman.c (functions to handle string manipulation)
 size_t   strline(const char*);
 char*    lineaddr(uint);
+uint     count_newline();
+void     update_line_count();
 
 //memman.c
 void     mem_panic();

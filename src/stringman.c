@@ -111,3 +111,51 @@ char* lineaddr(uint linenum)
 
     return buf->text + (curr_len * sizeof(char));
 }
+
+
+// counts the number of newline chars in the buffer to set depth var
+uint count_newline()
+{
+    char* curr = buffers[curr_buffer]->text;
+    uint counter = 0;
+
+    while(*curr != '\0')
+    {
+        if (*curr == '\n')
+            counter++;
+
+        curr++;
+    }
+
+    return counter;
+}
+
+void update_line_count()
+{
+    buffer* buf = buffers[curr_buffer];
+    line* lines = buf->lines;
+    char* curr = buf->text;
+
+    // realloc on size dif
+    if (buf->depth != lines->size)
+    {
+        // SAME REALLOC TEMP CHECK
+        if ((realloc(lines->lens, sizeof(int) * buf->depth)) == NULL)
+            mem_panic();
+        lines->size = buf->depth;
+    }
+
+    int pos = 0;
+    for (int i = 0; i < buf->depth; i++)
+    {
+        if (i == buf->depth - 1)
+        {
+            lines->lens[i] = strlen(curr);
+        }
+        else 
+        {
+            pos = lines->lens[i] = strline(curr);
+        }
+        curr = &curr[pos + 1];
+    }
+}
