@@ -14,13 +14,9 @@ int main (int argc, char** argv)
     char* fname = argv[1];
     
     // delete tabs from file
-    char com1[25];
-    char com2[25];
-    sprintf(com1, "expand %s > cmacs_temp_file", fname);
-    sprintf(com2, "cat cmacs_temp_file > %s", fname);    
+    char com1[80];
+    sprintf(com1, "expand %s > cmacs_temp_file && mv cmacs_temp_file %s", fname, fname);
     system(com1);
-    system(com2);
-    system("rm cmacs_temp_file");
 
     buffers_size = 0;
     open_file(fname);
