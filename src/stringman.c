@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "cmacs.h"
 
 // modified strlen that looks for newline instead of null terminator
