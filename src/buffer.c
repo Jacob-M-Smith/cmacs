@@ -150,13 +150,14 @@ int process_keystroke(int key)
                 move(y, x);
                 break;               
             case CTRL('p'):
+                if (buf->line_num == 0)
+                    break;
                 if (y == 0)
                 {
-                    if (buf->curr_depth == 0 || buf->line_num == 0)
-                        break;
                     buf->line_num--;
-                    buf->curr_depth--;
-                    buf->disp_start = lineaddr(buf->curr_depth);
+                    buf->curr_depth = buf->curr_depth > (maxy / 2) ? buf->curr_depth - maxy / 2 : 0;
+                    y = buf->curr_depth ? (maxy / 2) - 1 : buf->line_num;
+                    buf->disp_start = buf->curr_depth ? lineaddr(buf->curr_depth) : buf->text;
                         
                     update_line_count();
                     if (buf->lines->lens[buf->line_num] < x)
@@ -170,6 +171,7 @@ int process_keystroke(int key)
                     update_display = 1;
                     break;
                 }
+
                 update_line_count();
                 y--;
                 buf->line_num--;
