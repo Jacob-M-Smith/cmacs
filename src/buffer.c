@@ -225,12 +225,19 @@ int process_keystroke(int key)
                 break;
             case CTRL('j'):
                 add_char_to_buffer('\n');
+                if (y == maxy - 1)
+                {
+                    buf->curr_depth += maxy / 2;
+                    y -= maxy / 2;
+                    buf->disp_start = lineaddr(buf->curr_depth);
+                    update_display = 1;
+                }
                 y++;
                 x = 0;
                 buf->pos++;
                 buf->depth++;
                 buf->line_num++;
-                update_display = 1;                
+                update_display = 1;
                 break;
             case TAB:  // this should probably not be here but it was convenient
                 add_char_to_buffer(' ');
