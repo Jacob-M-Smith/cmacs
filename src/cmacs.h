@@ -7,8 +7,6 @@
 #define TAB      9
 #define DELETE   0        // constant adds readability to remove char function 
 
-#define TAB_SIZE 8
-
 typedef struct line       // holds information about lines
 {                         // makes navigation keys easier
     uint size;
@@ -23,8 +21,8 @@ typedef struct buffer
     uint   depth;          // number of newline characters in a file   
     line*  lines;          // structure managing line lengths records
     uint   line_num;       // the line number where the cursor currently resides in the buffer
-    uint   curr_depth;      // meta data used to track earliest line in buffer to be displayed
-    char*  disp_start;      // an address within the bounds of text where display should start
+    uint   curr_depth;     // meta data used to track earliest line in buffer to be displayed
+    char*  disp_start;     // an address within the bounds of text where display should start
     char*  text;           // string holding the contents of the file
 } buffer;
 
