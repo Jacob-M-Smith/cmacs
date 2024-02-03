@@ -125,14 +125,15 @@ int process_keystroke(int key)
                 }
                 break;
             case CTRL('n'):
-                if (y == buf->depth - 1)
+                if (buf->line_num + 1 == buf->depth - 1)
                     break;
                 if (y == maxy - 1)
                 {
                     if (buf->line_num == buf->depth - 1) // EOF
                         break;
-                    buf->curr_depth++;
+                    buf->curr_depth += (maxy / 2);                    
                     buf->disp_start = lineaddr(buf->curr_depth);
+                    y = (maxy / 2) + 1;
                     update_display = 1;
                 }
                 else
