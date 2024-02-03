@@ -10,18 +10,18 @@ Cmacs is written entirely in C for Linux systems. It utilizes the Standard Libra
 *version 1*
 This version contains the base features required to be a text editor.
 
-- File Input and Output (done)
-- User facing display (done)
-- Dynamic editable buffer (done)
+- File Input and Output                 (done)
+- User facing display                   (done)
+- Dynamic editable buffer               (done)
   - insertion and removal of characters (done)
-- Cursor movement (done)
-- Return/Enter functionality (done)
+- Cursor movement                       (done)
+- Return/Enter functionality            (done)
 
 *version 2*
-- More advanced movement key modifiers (done)
-  - ctrl + e (end of line) (done)
-  - ctrl + a (start of line) (done)
-- Scrolling (done)
+- More advanced movement key modifiers  (done)
+  - ctrl + e (end of line)              (done)
+  - ctrl + a (start of line)            (done)
+- Scrolling                             (done)
 - center command
   - ctrl + l
 - Multiple Buffers and Files
