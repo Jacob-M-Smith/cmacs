@@ -40,5 +40,4 @@ This version contains the base features required to be a text editor.
 ## Notes and Bugs
 - A minute amount of memory is never freed by ncurses' initscr function.
 - Valgrind has some errors for conditional jumps based on uninitialized values which are false flags.
-- Scrolling can sometimes stick towards the end of files (not sure why yet)
-- Pressing the enter at the end of the screen will not scroll automatically yet.
+- There are bugs associated with the length of the line containing the null terminator.
