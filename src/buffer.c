@@ -108,21 +108,16 @@ int process_keystroke(int key)
                     x--;
                     buf->pos--;
                     move(y, x);
+                    break;
                 }
-                else
-                {
-                    if (y == 0)
-                        break;
-                    else 
-                    {
-                        update_line_count();
-                        y--;
-                        buf->line_num--;
-                        buf->pos--;
-                        x = buf->lines->lens[y];
-                        move(y, x);
-                    }
-                }
+                if (y == 0)
+                    break;
+                update_line_count();
+                y--;
+                buf->line_num--;
+                buf->pos--;
+                x = buf->lines->lens[y];
+                move(y, x);
                 break;
             case CTRL('n'):
                 if (buf->line_num + 1 == buf->depth - 1)
