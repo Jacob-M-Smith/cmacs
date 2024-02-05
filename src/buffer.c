@@ -148,39 +148,43 @@ int process_keystroke(int key)
             case CTRL('p'):
                 if (buf->line_num == 0)
                     break;
-                if (y == 0)
+                update_line_count();
+                buf->line_num--;
+                if (y != 0 && buf->lines->lens[buf->line_num] < x)
                 {
-                    buf->line_num--;
-                    buf->curr_depth = buf->curr_depth > (maxy / 2) ? buf->curr_depth - maxy / 2 : 0;
-                    y = buf->curr_depth ? (maxy / 2) - 1 : buf->line_num;
-                    buf->disp_start = buf->curr_depth ? lineaddr(buf->curr_depth) : buf->text;
-                        
-                    update_line_count();
-                    if (buf->lines->lens[buf->line_num] < x)
-                    {
-                        buf->pos -= x + 1;
-                        x = buf->lines->lens[buf->line_num];
-                        update_display = 1;
-                        break;
-                    }
+                    y--;
+                    buf->pos -= x + 1;
+                    x = buf->lines->lens[buf->line_num];
+                    update_display = 1;
+                    break;                
+                }
+                else if (y != 0)
+                {
+                    y--;
                     buf->pos -= (x + (buf->lines->lens[buf->line_num] - x + 1));  
                     update_display = 1;
                     break;
                 }
-
-                update_line_count();
-                y--;
-                buf->line_num--;
-                if (buf->lines->lens[buf->line_num] < x)
+                else if (y == 0 && buf->lines->lens[buf->line_num] < x)
                 {
+                    buf->curr_depth = buf->curr_depth > (maxy / 2) ? buf->curr_depth - maxy / 2 : 0;
+                    y = buf->curr_depth ? (maxy / 2) - 1 : buf->line_num;
+                    buf->disp_start = buf->curr_depth ? lineaddr(buf->curr_depth) : buf->text;
                     buf->pos -= x + 1;
                     x = buf->lines->lens[buf->line_num];
                     update_display = 1;
                     break;
                 }
-                buf->pos -= (x + (buf->lines->lens[buf->line_num] - x + 1));  
-                update_display = 1;
-                break;                
+                else
+                {
+                    buf->curr_depth = buf->curr_depth > (maxy / 2) ? buf->curr_depth - maxy / 2 : 0;
+                    y = buf->curr_depth ? (maxy / 2) - 1 : buf->line_num;
+                    buf->disp_start = buf->curr_depth ? lineaddr(buf->curr_depth) : buf->text;
+                    buf->pos -= (x + (buf->lines->lens[buf->line_num] - x + 1));  
+                    update_display = 1;
+                    break;
+                }
+                break;
             case CTRL('e'):
                 update_line_count();
                 if (x == buf->lines->lens[buf->line_num])
