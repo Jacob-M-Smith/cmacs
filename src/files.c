@@ -97,7 +97,7 @@ void open_file(char* fname)
     line* lines = (buffers[curr_buffer]->lines);
     lines->size = d;
     lines->lens = (int*)malloc(sizeof(int) * d);
-    update_line_count();;
+    update_line_count();
 }
 
 void update_file(WINDOW* win)
