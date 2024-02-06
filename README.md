@@ -22,9 +22,10 @@ This version contains the base features required to be a text editor.
   - ctrl + e (end of line)              (done)
   - ctrl + a (start of line)            (done)
 - Scrolling                             (done)
-- center command
-  - ctrl + l
+- center command                        (done)
+  - ctrl + l                            (done)
 - Multiple Buffers and Files
+  - menun
 - Copy, Cut and Paste
   - Text Highlighting
   - Mark setting
@@ -40,4 +41,3 @@ This version contains the base features required to be a text editor.
 ## Notes and Bugs
 - A minute amount of memory is never freed by ncurses' initscr function.
 - Valgrind has some errors for conditional jumps based on uninitialized values which are false flags.
-- There are bugs associated with the length of the line containing the null terminator.
