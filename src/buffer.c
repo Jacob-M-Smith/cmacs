@@ -241,6 +241,15 @@ int process_keystroke(int key)
                 buf->line_num++;
                 update_display = 1;
                 break;
+            case CTRL('l'):
+                if (buf->line_num < (maxy / 2) + 1 || y == maxy / 2)
+                    break;
+                int dif = y - (maxy / 2);
+                y = maxy / 2;
+                buf->curr_depth += dif;
+                buf->disp_start = lineaddr(buf->curr_depth);
+                update_display = 1;
+                break;
             case TAB:  // this should probably not be here but it was convenient
                 add_char_to_buffer(' ');
                 add_char_to_buffer(' ');
