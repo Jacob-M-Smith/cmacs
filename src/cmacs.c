@@ -11,18 +11,14 @@ int main (int argc, char** argv)
         return 0;
     }
     
-    char* fname = argv[1];
-    
-    // delete tabs from file
-    char com1[80];
-    sprintf(com1, "expand %s > cmacs_temp_file && mv cmacs_temp_file %s", fname, fname);
-    system(com1);
+    char* fname = argv[1];   
 
     buffers_size = 0;
     open_file(fname);
 
     initscr();
     noecho();
+    //    set_tabsize(4);
     raw();
 
     clear();
@@ -46,6 +42,9 @@ int main (int argc, char** argv)
             else
             {
                 // go to ctrl+x sub menu when implemented
+
+                // if key ==  27 go to alt menu and read another code 
+                // if there is no other code (esc) exit 
                 continue;
             }
         }
