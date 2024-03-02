@@ -10,13 +10,17 @@ size_t strline (const char *str)
   const char *char_ptr;
   const unsigned long int *longword_ptr;
   unsigned long int longword, himagic, lomagic;
+  unsigned int length = 0;
   /* Handle the first few characters by reading one character at a time.
      Do this until CHAR_PTR is aligned on a longword boundary.  */
-  for (char_ptr = str; ((unsigned long int) char_ptr
-			& (sizeof (longword) - 1)) != 0;
-       ++char_ptr)
+  for (char_ptr = str; ((unsigned long int) char_ptr & (sizeof (longword) - 1)) != 0;  ++char_ptr)
+  {
+    if (*char_ptr == '\t')
+      length += TAB_SIZE;
     if (*char_ptr == '\n')
-      return char_ptr - str;
+      return length;
+    length++;
+  }
   /* All these elucidatory comments refer to 4-byte longwords,
      but the theory applies equally well to 8-byte longwords.  */
   longword_ptr = (unsigned long int *) char_ptr;
@@ -52,23 +56,39 @@ size_t strline (const char *str)
 	  const char *cp = (const char *) (longword_ptr - 1);
       // check for newline
 	  if (cp[0] == '\n')
-	    return cp - str;
+	    return length;
+      if (cp[0] == '\t')
+        length += TAB_SIZE;
 	  if (cp[1] == '\n')
-	    return cp - str + 1;
+	    return length + 1;
+      if (cp[1] == '\t')
+        length += TAB_SIZE;
 	  if (cp[2] == '\n')
-	    return cp - str + 2;
+	    return length + 2;
+      if (cp[2] == '\t')
+        length += TAB_SIZE;
 	  if (cp[3] == '\n')
-	    return cp - str + 3;
+	    return length + 3;
+      if (cp[3] == '\t')
+        length += TAB_SIZE;
 	  if (sizeof (longword) > 4)
 	    {
 	      if (cp[4] == '\n')
-		return cp - str + 4;
+		return length + 4;
+          if (cp[4] == '\t')
+        length += TAB_SIZE;
 	      if (cp[5] == '\n')
-		return cp - str + 5;
+		return length + 5;
+          if (cp[5] == '\t')
+        length += TAB_SIZE;
 	      if (cp[6] == '\n')
-		return cp - str + 6;
+		return length + 6;
+          if (cp[6] == '\t')
+        length += TAB_SIZE;
 	      if (cp[7] == '\n')
-		return cp - str + 7;
+		return length + 7;
+          if (cp[7] == '\t')
+        length += TAB_SIZE;
 	    }
       // check for null
 	  if (cp[0] == 0)
@@ -91,6 +111,7 @@ size_t strline (const char *str)
 	    return -1;
 	    }
 	}
+      length += 8;
     }
 }
 
