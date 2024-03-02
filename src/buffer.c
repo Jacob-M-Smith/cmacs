@@ -128,7 +128,7 @@ int process_keystroke(int key)
                         break;
                     buf->curr_depth += (maxy / 2);                    
                     buf->disp_start = lineaddr(buf->curr_depth);
-                    y = (maxy / 2);
+                    y = (maxy / 2)  + 1;
                     update_display = 1;
                 }
                 else
@@ -249,6 +249,12 @@ int process_keystroke(int key)
                 buf->curr_depth += dif;
                 buf->disp_start = lineaddr(buf->curr_depth);
                 update_display = 1;
+                break;
+            case CTRL('v'):
+                /*if (buf->line_num - buf->curr_depth < maxy - 1)
+                    break;
+                x = 0;
+                buf->*/
                 break;
             case TAB:  // this should probably not be here but it was convenient
                 add_char_to_buffer(' ');
