@@ -18,7 +18,7 @@ int main (int argc, char** argv)
 
     initscr();
     noecho();
-    //    set_tabsize(4);
+    //    set_tabsize(TAB_SIZE);
     raw();
 
     clear();
