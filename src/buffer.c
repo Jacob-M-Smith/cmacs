@@ -66,6 +66,28 @@ int remove_char_from_buffer(int backspace)
     return 1;
 }
 
+unsigned int detab()
+{
+    char* currchar = buffers[curr_buffer]->text;
+    
+    while (*currchar)
+    {
+        if (*currchar == '\t')
+        {
+            remove_char_from_buffer(0);
+
+            for (int i = 0; i < TAB_SIZE / 2; i++)
+            {
+                add_char_to_buffer(' ');
+                add_char_to_buffer(' ');
+            }
+        }
+        currchar++;
+        buffers[curr_buffer]->pos++;
+    }
+    buffers[curr_buffer]->pos = 0;
+}
+
 int process_keystroke(int key)
 {
     uint y, x, maxy, maxx;

@@ -15,10 +15,10 @@ int main (int argc, char** argv)
 
     buffers_size = 0;
     open_file(fname);
+    detab();
 
     initscr();
     noecho();
-    //    set_tabsize(TAB_SIZE);
     raw();
 
     clear();
@@ -56,7 +56,7 @@ int main (int argc, char** argv)
         refresh();
     }
 
-    clear();
+    clear();;
     endwin();
     dealloc_all_buffers();
 
