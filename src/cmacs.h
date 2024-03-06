@@ -7,7 +7,8 @@
 #define TAB      9
 #define DELETE   0        // constant adds readability to remove char function 
 
-#define TAB_SIZE 4        // change to adjust for system tab size
+#define TAB_SIZE 4        // change to adjust for system tab size 
+                          // legal values are multiples of 2, common values are 2, 4, 8.
 
 typedef struct line       // holds information about lines
 {                         // makes navigation keys easier
@@ -40,6 +41,7 @@ void     update_file();
 // buffer.c (functions to handle buffer management)
 int      add_char_to_buffer(char);
 int      process_keystroke(int);
+uint     detab();
 int      remove_char_from_buffer(int);
 
 //stringman.c (functions to handle string manipulation)
