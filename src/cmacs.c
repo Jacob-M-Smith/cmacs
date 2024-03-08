@@ -27,9 +27,10 @@ int main (int argc, char** argv)
 
     move(0, 0);
 
+    int key = 0;
     while(1)
     {
-        int key = getch();
+        key = getch();
         
         if (key == CTRL('x'))
         {
@@ -39,10 +40,16 @@ int main (int argc, char** argv)
                 break;
             ctrl_x_sub_commands(key); 
         }
-        else
-        {           
-            process_keystroke(key);
+        else if (key == 27)                 // key is either escape or meta + some key.
+        {
+            key = getch();
+            if (key != 27)                  // This means the 27 was a meta key. Call the appropriate function.
+                meta_commands(key);
+            // Otherwise 27 key was escape. Do nothing.
+
         }
+        else
+            process_keystroke(key);
 
         refresh();
     }
