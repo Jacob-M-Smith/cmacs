@@ -142,7 +142,7 @@ int process_keystroke(int key)
                 move(y, x);
                 break;
             case CTRL('n'):
-                if (buf->line_num + 1 == buf->depth - 1)
+                if (buf->line_num + 1 == buf->depth)
                     break;
                 if (y == maxy - 1)
                 {
@@ -305,4 +305,25 @@ int process_keystroke(int key)
         addstr(buf->disp_start);
         move(y, x);
     }
+}
+
+int ctrl_x_sub_commands(int key)
+{
+    switch(key)
+    {
+    case 's':               // save this file
+        update_file();
+        break;
+    case CTRL('s'):         // save all files (not currently distinct)
+        update_file();
+        break;
+    default:
+        return 0;            
+    }
+    return 1;
+}
+
+int meta_commands(int key)
+{
+    return 1;
 }
