@@ -43,6 +43,7 @@ int      add_char_to_buffer(char);
 int      process_keystroke(int);
 uint     detab();
 int      remove_char_from_buffer(int);
+int      ctrl_commands(int);
 int      ctrl_x_sub_commands(int);
 int      meta_commands(int);
 
