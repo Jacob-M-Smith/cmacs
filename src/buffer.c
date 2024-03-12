@@ -88,7 +88,37 @@ unsigned int detab()
     buffers[curr_buffer]->pos = 0;
 }
 
-int process_keystroke(int key)
+int process_keystroke(int key)           // regular keystrokes
+{
+    buffer* buf = buffers[curr_buffer];
+
+    uint y, x;
+    getyx(stdscr, y, x);
+
+    if (key == TAB)
+    {
+        add_char_to_buffer(' ');
+        add_char_to_buffer(' ');
+        add_char_to_buffer(' ');
+        add_char_to_buffer(' ');
+        buf->pos += 4;
+        x += 4;
+    }
+    else
+    {
+        add_char_to_buffer((char)key);
+        buf->pos++;
+        x++; // needs end of line handling
+    }
+
+    clear();
+    addstr(buf->disp_start);
+    move(y, x);
+
+    return 1;
+}
+
+int ctrl_commands(int key)
 {
     uint y, x, maxy, maxx;
     uint update_display = 0;                // set to 1 when screen needs to be redrawn
@@ -104,199 +134,180 @@ int process_keystroke(int key)
     if (key == BCKSPCE)
         key = CTRL('h');
 
-    if (key < 0x1f)  // key is a control key
+    switch(key)
     {
-        switch(key)
+    case CTRL('f'):
+        if (curr_is_null)
+            break;
+        if (curr_is_newl || (x == maxx - 1))
         {
-            case CTRL('f'):
-                if (curr_is_null)
-                    break;
-                if (curr_is_newl || (x == maxx - 1))
-                {
-                    x = 0;
-                    buf->line_num++;
-                    y++;
-                }
-                else
-                {
-                    x++;
-                }
-                buf->pos++;
-                move(y, x);
-                break;
-            case CTRL('b'):
-                if (x != 0)
-                {
-                    x--;
-                    buf->pos--;
-                    move(y, x);
-                    break;
-                }
-                if (y == 0)
-                    break;
-                update_line_count();
-                y--;
-                buf->line_num--;
-                buf->pos--;
-                x = buf->lines->lens[y];
-                move(y, x);
-                break;
-            case CTRL('n'):
-                if (buf->line_num + 1 == buf->depth)
-                    break;
-                if (y == maxy - 1)
-                {
-                    if (buf->line_num == buf->depth - 1) // EOF
-                        break;
-                    buf->curr_depth += (maxy / 2);                    
-                    buf->disp_start = lineaddr(buf->curr_depth);
-                    y = (maxy / 2)  + 1;
-                    update_display = 1;
-                }
-                else
-                    y++;
-                update_line_count();
-                buf->line_num++;
-                if (buf->lines->lens[buf->line_num] < x) 
-                {
-                    buf->pos += (buf->lines->lens[buf->line_num - 1] - x) + buf->lines->lens[buf->line_num] + 1;
-                    x = buf->lines->lens[buf->line_num];
-                    move(y, x);
-                    break;
-                }
-                buf->pos += (buf->lines->lens[buf->line_num - 1] - x) + x + 1;
-                move(y, x);
-                break;               
-            case CTRL('p'):
-                if (buf->line_num == 0)
-                    break;
-                update_line_count();
-                buf->line_num--;
-                if (y != 0 && buf->lines->lens[buf->line_num] < x)
-                {
-                    y--;
-                    buf->pos -= x + 1;
-                    x = buf->lines->lens[buf->line_num];
-                    update_display = 1;
-                    break;                
-                }
-                else if (y != 0)
-                {
-                    y--;
-                    buf->pos -= (x + (buf->lines->lens[buf->line_num] - x + 1));  
-                    update_display = 1;
-                    break;
-                }
-                else if (y == 0 && buf->lines->lens[buf->line_num] < x)
-                {
-                    buf->curr_depth = buf->curr_depth > (maxy / 2) ? buf->curr_depth - maxy / 2 : 0;
-                    y = buf->curr_depth ? (maxy / 2) - 1 : buf->line_num;
-                    buf->disp_start = buf->curr_depth ? lineaddr(buf->curr_depth) : buf->text;
-                    buf->pos -= x + 1;
-                    x = buf->lines->lens[buf->line_num];
-                    update_display = 1;
-                    break;
-                }
-                else
-                {
-                    buf->curr_depth = buf->curr_depth > (maxy / 2) ? buf->curr_depth - maxy / 2 : 0;
-                    y = buf->curr_depth ? (maxy / 2) - 1 : buf->line_num;
-                    buf->disp_start = buf->curr_depth ? lineaddr(buf->curr_depth) : buf->text;
-                    buf->pos -= (x + (buf->lines->lens[buf->line_num] - x + 1));  
-                    update_display = 1;
-                    break;
-                }
-                break;
-            case CTRL('e'):
-                update_line_count();
-                if (x == buf->lines->lens[buf->line_num])
-                    break;
-                buf->pos += (buf->lines->lens[buf->line_num] - x);
-                x = buf->lines->lens[buf->line_num];
-                move(y, x);
-                break;
-            case CTRL('a'):                
-                if (x == 0)
-                    break;
-                buf->pos -= x;
-                x = 0;
-                move(y, x);
-                break;
-            case CTRL('d'):
-                if (buf->text[buf->pos] == '\0')
-                    break;
-                remove_char_from_buffer(DELETE);
-                update_display = 1;
-                break;
-            case CTRL('h'):
-                if (buf->pos == 0)
-                    break;
-                if (buf->text[buf->pos - 1] != '\n')
-                {
-                    remove_char_from_buffer(BCKSPCE);
-                    buf->pos--;
-                    x--;
-                }
-                else
-                {
-                    remove_char_from_buffer(BCKSPCE);
-                    buf->line_num--;
-                    buf->pos--;
-                    y--;
-                    x = buf->lines->lens[y];
-                }
-                update_display = 1;
-                break;
-            case CTRL('j'):
-                add_char_to_buffer('\n');
-                if (y == maxy - 1)
-                {
-                    buf->curr_depth += maxy / 2;
-                    y -= maxy / 2;
-                    buf->disp_start = lineaddr(buf->curr_depth);
-                    update_display = 1;
-                }
-                y++;
-                x = 0;
-                buf->pos++;
-                buf->depth++;
-                buf->line_num++;
-                update_display = 1;
-                break;
-            case CTRL('l'):
-                if (buf->line_num < (maxy / 2) + 1 || y == maxy / 2)
-                    break;
-                int dif = y - (maxy / 2);
-                y = maxy / 2;
-                buf->curr_depth += dif;
-                buf->disp_start = lineaddr(buf->curr_depth);
-                update_display = 1;
-                break;
-            case CTRL('v'):
-                /*if (buf->line_num - buf->curr_depth < maxy - 1)
-                    break;
-                x = 0;
-                buf->*/
-                break;
-            case TAB:  // this should probably not be here but it was convenient
-                add_char_to_buffer(' ');
-                add_char_to_buffer(' ');
-                add_char_to_buffer(' ');
-                add_char_to_buffer(' ');
-                buf->pos += 4;
-                x += 4;
-                update_display = 1;
-                break;            
-            default:
-                return 0;            
+            x = 0;
+            buf->line_num++;
+            y++;
         }
-    }
-    else             // key is regular input
-    {
-        add_char_to_buffer((char)key);
-        update_display = 1;
+        else
+        {
+            x++;
+        }
         buf->pos++;
-        x++; // needs end of line handling
+        move(y, x);
+        break;
+    case CTRL('b'):
+        if (x != 0)
+        {
+            x--;
+            buf->pos--;
+            move(y, x);
+            break;
+        }
+        if (y == 0)
+            break;
+        update_line_count();
+        y--;
+        buf->line_num--;
+        buf->pos--;
+        x = buf->lines->lens[y];
+        move(y, x);
+        break;
+    case CTRL('n'):
+        if (buf->line_num + 1 == buf->depth)
+            break;
+        if (y == maxy - 1)
+        {
+            if (buf->line_num == buf->depth - 1) // EOF
+                break;
+            buf->curr_depth += (maxy / 2);                    
+            buf->disp_start = lineaddr(buf->curr_depth);
+            y = (maxy / 2)  + 1;
+            update_display = 1;
+        }
+        else
+            y++;
+        update_line_count();
+        buf->line_num++;
+        if (buf->lines->lens[buf->line_num] < x) 
+        {
+            buf->pos += (buf->lines->lens[buf->line_num - 1] - x) + buf->lines->lens[buf->line_num] + 1;
+            x = buf->lines->lens[buf->line_num];
+            move(y, x);
+            break;
+        }
+        buf->pos += (buf->lines->lens[buf->line_num - 1] - x) + x + 1;
+        move(y, x);
+        break;               
+    case CTRL('p'):
+        if (buf->line_num == 0)
+            break;
+        update_line_count();
+        buf->line_num--;
+        if (y != 0 && buf->lines->lens[buf->line_num] < x)
+        {
+            y--;
+            buf->pos -= x + 1;
+            x = buf->lines->lens[buf->line_num];
+            update_display = 1;
+            break;                
+        }
+        else if (y != 0)
+        {
+            y--;
+            buf->pos -= (x + (buf->lines->lens[buf->line_num] - x + 1));  
+            update_display = 1;
+            break;
+        }
+        else if (y == 0 && buf->lines->lens[buf->line_num] < x)
+        {
+            buf->curr_depth = buf->curr_depth > (maxy / 2) ? buf->curr_depth - maxy / 2 : 0;
+            y = buf->curr_depth ? (maxy / 2) - 1 : buf->line_num;
+            buf->disp_start = buf->curr_depth ? lineaddr(buf->curr_depth) : buf->text;
+            buf->pos -= x + 1;
+            x = buf->lines->lens[buf->line_num];
+            update_display = 1;
+            break;
+        }
+        else
+        {
+            buf->curr_depth = buf->curr_depth > (maxy / 2) ? buf->curr_depth - maxy / 2 : 0;
+            y = buf->curr_depth ? (maxy / 2) - 1 : buf->line_num;
+            buf->disp_start = buf->curr_depth ? lineaddr(buf->curr_depth) : buf->text;
+            buf->pos -= (x + (buf->lines->lens[buf->line_num] - x + 1));  
+            update_display = 1;
+            break;
+        }
+        break;
+    case CTRL('e'):
+        update_line_count();
+        if (x == buf->lines->lens[buf->line_num])
+            break;
+        buf->pos += (buf->lines->lens[buf->line_num] - x);
+        x = buf->lines->lens[buf->line_num];
+        move(y, x);
+        break;
+    case CTRL('a'):                
+        if (x == 0)
+            break;
+        buf->pos -= x;
+        x = 0;
+        move(y, x);
+        break;
+    case CTRL('d'):
+        if (buf->text[buf->pos] == '\0')
+            break;
+        remove_char_from_buffer(DELETE);
+        update_display = 1;
+        break;
+    case CTRL('h'):
+        if (buf->pos == 0)
+            break;
+        if (buf->text[buf->pos - 1] != '\n')
+        {
+            remove_char_from_buffer(BCKSPCE);
+            buf->pos--;
+            x--;
+        }
+        else
+        {
+            remove_char_from_buffer(BCKSPCE);
+            buf->line_num--;
+            buf->pos--;
+            y--;
+            x = buf->lines->lens[y];
+        }
+        update_display = 1;
+        break;
+    case CTRL('j'):
+        add_char_to_buffer('\n');
+        if (y == maxy - 1)
+        {
+            buf->curr_depth += maxy / 2;
+            y -= maxy / 2;
+            buf->disp_start = lineaddr(buf->curr_depth);
+            update_display = 1;
+        }
+        y++;
+        x = 0;
+        buf->pos++;
+        buf->depth++;
+        buf->line_num++;
+        update_display = 1;
+        break;
+    case CTRL('l'):
+        if (buf->line_num < (maxy / 2) + 1 || y == maxy / 2)
+            break;
+        int dif = y - (maxy / 2);
+        y = maxy / 2;
+        buf->curr_depth += dif;
+        buf->disp_start = lineaddr(buf->curr_depth);
+        update_display = 1;
+        break;
+    case CTRL('v'):
+        /*if (buf->line_num - buf->curr_depth < maxy - 1)
+          break;
+          x = 0;
+          buf->*/
+        break;
+    default:
+        return 0;            
     }
 
     if (update_display)
