@@ -294,9 +294,8 @@ int ctrl_commands(int key)
     case CTRL('l'):
         if (buf->line_num < (maxy / 2) + 1 || y == maxy / 2)
             break;
-        int dif = y - (maxy / 2);
+        buf->curr_depth += y - (maxy / 2);
         y = maxy / 2;
-        buf->curr_depth += dif;
         buf->disp_start = lineaddr(buf->curr_depth);
         update_display = 1;
         break;
