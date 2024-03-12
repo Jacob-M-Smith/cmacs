@@ -301,10 +301,14 @@ int ctrl_commands(int key)
         update_display = 1;
         break;
     case CTRL('v'):
-        /*if (buf->line_num - buf->curr_depth < maxy - 1)
-          break;
-          x = 0;
-          buf->*/
+        if (buf->depth < buf->curr_depth +  maxy - 2) // scrolling would jump over EOF
+            break; 
+        x = 0, y = 0;
+        buf->curr_depth += (maxy - 2);
+        buf->line_num = buf->curr_depth;
+        buf->disp_start = lineaddr(buf->curr_depth); 
+        buf->pos = (int)(buf->disp_start - buf->text);  // new position
+        update_display = 1;
         break;
     default:
         return 0;            
