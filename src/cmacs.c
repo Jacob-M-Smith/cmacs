@@ -40,6 +40,8 @@ int main (int argc, char** argv)
                 break;
             ctrl_x_sub_commands(key); 
         }
+        else if (key < 0x1f && key != TAB)
+            ctrl_commands(key);
         else if (key == 27)                 // key is either escape or meta + some key.
         {
             key = getch();
