@@ -40,16 +40,15 @@ int main (int argc, char** argv)
                 break;
             ctrl_x_sub_commands(key); 
         }
-        else if (key < 0x1f && key != TAB)
-            ctrl_commands(key);
         else if (key == 27)                 // key is either escape or meta + some key.
         {
             key = getch();
             if (key != 27)                  // This means the 27 was a meta key. Call the appropriate function.
                 meta_commands(key);
             // Otherwise 27 key was escape. Do nothing.
-
         }
+        else if (key < 0x1f && key != TAB)
+            ctrl_commands(key);
         else
             process_keystroke(key);
 
