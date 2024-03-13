@@ -339,5 +339,37 @@ int ctrl_x_sub_commands(int key)
 
 int meta_commands(int key)
 {
+    uint y, x, maxy, maxx;
+    uint update_display = 0;                // set to 1 when screen needs to be redrawn
+
+    buffer* buf = buffers[curr_buffer];
+
+    getyx(stdscr, y, x);
+    getmaxyx(stdscr, maxy, maxx);
+
+    switch(key)
+    {
+    case 'v':
+        if (buf->curr_depth == 0)           // we cannot scroll up (we are already at top, maybe we have not written a full "page worth of text")
+            break;
+        if (buf->curr_depth < maxy)         // we cannot scroll up the full page
+        {
+            buf->curr_depth = 0;
+            buf->disp_start = buf->text;
+        }
+        buf->line_num = maxy - 1;
+        buf->pos = (int)(lineaddr(buf->line_num) - buf->text);
+        x = 0;
+        y = maxy;
+        update_display = 1;
+        break;
+    }
+
+    if (update_display)
+    {
+        clear();
+        addstr(buf->disp_start);
+        move(y, x);
+    }
     return 1;
 }
