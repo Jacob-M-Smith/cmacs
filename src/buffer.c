@@ -367,11 +367,11 @@ int meta_commands(int key)
             buf->curr_depth -= maxy - 1;
             buf->disp_start = lineaddr(buf->curr_depth);
         }
-        x = 0;
-        y = maxy;
-        move(y, x);
-        refresh();
+        x = 0; 
+        y = maxy - 1;
         update_display = 1;
+        break;
+    default:
         break;
     }
 
@@ -379,7 +379,7 @@ int meta_commands(int key)
     {
         clear();
         addstr(buf->disp_start);
-        move(y, x);
+        move(y, 0);
     }
     return 1;
 }
