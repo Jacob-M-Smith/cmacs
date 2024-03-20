@@ -350,9 +350,10 @@ int meta_commands(int key)
     switch(key)
     {
     case 'v':
+        // lots of this case will need to be adjusted based on inclusion of a menu bar
         if (buf->curr_depth == 0)           // we cannot scroll up (we are already at top, maybe we have not written a full "page worth of text")
             break;
-        if (buf->curr_depth < maxy)         // we cannot scroll up the full page
+        if (buf->curr_depth <= maxy)         // we cannot scroll up the full page
         {
             buf->curr_depth = 0;
             buf->disp_start = buf->text;
@@ -363,11 +364,13 @@ int meta_commands(int key)
         {
             buf->line_num = buf->curr_depth;
             buf->pos = (int)(lineaddr(buf->line_num) - buf->text);
-            buf->curr_depth -= maxy;
+            buf->curr_depth -= maxy - 1;
             buf->disp_start = lineaddr(buf->curr_depth);
         }
         x = 0;
         y = maxy;
+        move(y, x);
+        refresh();
         update_display = 1;
         break;
     }
