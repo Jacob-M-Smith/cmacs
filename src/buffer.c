@@ -178,7 +178,7 @@ int ctrl_commands(int key)
                 break;
             buf->curr_depth += (maxy / 2);                    
             buf->disp_start = lineaddr(buf->curr_depth);
-            y = (maxy / 2)  + 1;
+            y = (maxy / 2);
             update_display = 1;
         }
         else
@@ -356,9 +356,16 @@ int meta_commands(int key)
         {
             buf->curr_depth = 0;
             buf->disp_start = buf->text;
+            buf->line_num = maxy - 1;
+            buf->pos = (int)(lineaddr(buf->line_num) - buf->text);
         }
-        buf->line_num = maxy - 1;
-        buf->pos = (int)(lineaddr(buf->line_num) - buf->text);
+        else
+        {
+            buf->line_num = buf->curr_depth;
+            buf->pos = (int)(lineaddr(buf->line_num) - buf->text);
+            buf->curr_depth -= maxy;
+            buf->disp_start = lineaddr(buf->curr_depth);
+        }
         x = 0;
         y = maxy;
         update_display = 1;
