@@ -372,9 +372,9 @@ int meta_commands(int key)
         update_display = 1;
         break;
     case 'i':           // unindent command
-        if (x < 3)
+        if (x < TAB_SIZE - 1)
             break;
-        for (int i = 0; i < T; i++)
+        for (int i = 0; i < TAB_SIZE; i++)
         {
             remove_char_from_buffer(BCKSPCE);
             x--;
