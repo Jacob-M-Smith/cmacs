@@ -4,7 +4,7 @@
 #define CTRL(x) ((x) & 0x1f)
 
 #define BCKSPCE  127
-#define TAB      9
+#define TAB      4
 #define DELETE   0        // constant adds readability to remove char function 
 
 #define TAB_SIZE 4        // change to adjust for system tab size 
