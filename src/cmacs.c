@@ -26,11 +26,13 @@ int main (int argc, char** argv)
     refresh();
 
     move(0, 0);
-
     int key = 0;
+
     while(1)
     {
         key = getch();
+        if (key == BCKSPCE)
+            key = CTRL('h');
         
         if (key == CTRL('x'))
         {
