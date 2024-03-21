@@ -97,12 +97,10 @@ int process_keystroke(int key)           // regular keystrokes
 
     if (key == TAB)
     {
-        add_char_to_buffer(' ');
-        add_char_to_buffer(' ');
-        add_char_to_buffer(' ');
-        add_char_to_buffer(' ');
-        buf->pos += 4;
-        x += 4;
+        for (int i = 0; i < TAB_SIZE; i++)
+            add_char_to_buffer(' ');
+        buf->pos += TAB_SIZE;
+        x += TAB_SIZE;
     }
     else
     {
