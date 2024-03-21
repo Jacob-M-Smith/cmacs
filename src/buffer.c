@@ -371,17 +371,6 @@ int meta_commands(int key)
         y = maxy - 1;
         update_display = 1;
         break;
-    case 'i':
-        if (x < 3)
-            break;
-        for (int i = 0; i < 4; i++)
-        {
-            remove_char_from_buffer(BCKSPCE);
-            x--;
-            buf->pos--;
-        }
-        update_display = 1;
-        break;
     default:
         break;
     }
@@ -390,7 +379,7 @@ int meta_commands(int key)
     {
         clear();
         addstr(buf->disp_start);
-        move(y, x);
+        move(y, 0);
     }
     return 1;
 }
