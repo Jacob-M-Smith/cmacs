@@ -380,6 +380,15 @@ int meta_commands(int key)
         }
         update_display = 1;
         break;
+    case '<':
+        buf->disp_start = buf->text;
+        buf->line_num = 0;
+        buf->pos = 0;
+        x = 0, y = 0;
+        update_display = 1;
+        break;
+    case '>':
+        break;
     default:
         break;
     }
