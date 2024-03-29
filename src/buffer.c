@@ -176,7 +176,7 @@ int ctrl_commands(int key)
                 break;
             buf->curr_depth += (maxy / 2);                    
             buf->disp_start = lineaddr(buf->curr_depth);
-            y = (maxy / 2);
+            y = (maxy / 2) + 1;
             update_display = 1;
         }
         else
