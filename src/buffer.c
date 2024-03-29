@@ -388,6 +388,13 @@ int meta_commands(int key)
         update_display = 1;
         break;
     case '>':
+        buf->curr_depth = buf->depth - (maxy - 5);
+        buf->disp_start = lineaddr(buf->curr_depth);
+        buf->line_num = buf->depth - 2;
+        buf->pos = strlen(buf->text) - 1;
+        x = buf->lines->lens[buf->line_num];
+        y = maxy - 7;
+        update_display = 1;
         break;
     default:
         break;
