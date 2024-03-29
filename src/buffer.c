@@ -109,7 +109,7 @@ int process_keystroke(int key)           // regular keystrokes
         x++; // needs end of line handling
     }
 
-    clear();
+    erase();
     addstr(buf->disp_start);
     move(y, x);
 
@@ -313,7 +313,7 @@ int ctrl_commands(int key)
 
     if (update_display)
     {
-        clear();
+        erase();
         addstr(buf->disp_start);
         move(y, x);
     }
