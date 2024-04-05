@@ -164,7 +164,7 @@ int ctrl_commands(int key)
         y--;
         buf->line_num--;
         buf->pos--;
-        x = buf->lines->lens[y];
+        x = buf->lines->lens[buf->line_num];
         move(y, x);
         break;
     case CTRL('n'):
