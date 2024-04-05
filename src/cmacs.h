@@ -21,7 +21,7 @@ typedef struct buffer
     char*  fname;          // file name
     uint   pos;            // position of cursor in linear buffer
     uint   size;           // amount of memory allocated to the buffer
-    uint   depth;          // number of newline characters in a file   
+    uint   depth;          // number of newline characters in a file
     line*  lines;          // structure managing line lengths records
     uint   line_num;       // the line number where the cursor currently resides in the buffer
     uint   curr_depth;     // meta data used to track earliest line in buffer to be displayed
@@ -46,6 +46,7 @@ int      remove_char_from_buffer(int);
 int      ctrl_commands(int);
 int      ctrl_x_sub_commands(int);
 int      meta_commands(int);
+void     redraw(int, int);
 
 //stringman.c (functions to handle string manipulation)
 size_t   strline(const char*);

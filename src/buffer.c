@@ -109,10 +109,7 @@ int process_keystroke(int key)           // regular keystrokes
         x++; // needs end of line handling
     }
 
-    erase();
-    addstr(buf->disp_start);
-    move(y, x);
-
+    redraw(y, x);
     return 1;
 }
 
@@ -312,11 +309,7 @@ int ctrl_commands(int key)
     }
 
     if (update_display)
-    {
-        erase();
-        addstr(buf->disp_start);
-        move(y, x);
-    }
+        redraw(y, x);
 }
 
 int ctrl_x_sub_commands(int key)
@@ -409,10 +402,14 @@ int meta_commands(int key)
     }
 
     if (update_display)
-    {
-        erase();
-        addstr(buf->disp_start);
-        move(y, x);
-    }
+        redraw(y, x);
+
     return 1;
+}
+
+void redraw(int y, int x)
+{
+    erase();
+    addstr(buffers[curr_buffer]->disp_start);
+    move(y, x);
 }
