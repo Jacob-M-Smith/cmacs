@@ -402,16 +402,7 @@ int meta_commands(int key)
         }
         else       
             y = buf->depth - 1;
-
-
         update_display = 1;
-        /* case specific
-        buf->curr_depth = buf->depth - (maxy - 5);
-        buf->disp_start = lineaddr(buf->curr_depth);
-        buf->pos = strlen(buf->text) - 1;
-        x = buf->lines->lens[buf->line_num];
-        y = maxy - 7;
-        update_display = 1;*/
         break;
     default:
         break;
@@ -419,7 +410,7 @@ int meta_commands(int key)
 
     if (update_display)
     {
-        clear();   // replace with erase
+        erase();
         addstr(buf->disp_start);
         move(y, x);
     }
