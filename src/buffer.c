@@ -381,6 +381,8 @@ int meta_commands(int key)
         update_display = 1;
         break;
     case '<':
+        if (buf->pos = 0)
+            break;
         buf->disp_start = buf->text;
         buf->line_num = 0;
         buf->pos = 0;
@@ -388,13 +390,28 @@ int meta_commands(int key)
         update_display = 1;
         break;
     case '>':
+        buf->pos = strlen(buf->text);
+        buf->line_num = buf->depth - 1;
+        x = buf->lines->lens[buf->line_num];
+       
+        if (buf->depth > maxy) // in this case change where the display starts 
+        {
+            buf->curr_depth = buf->depth - (maxy - 5);
+            buf->disp_start = lineaddr(buf->curr_depth);
+            y = maxy - 6;
+        }
+        else       
+            y = buf->depth - 1;
+
+
+        update_display = 1;
+        /* case specific
         buf->curr_depth = buf->depth - (maxy - 5);
         buf->disp_start = lineaddr(buf->curr_depth);
-        buf->line_num = buf->depth - 2;
         buf->pos = strlen(buf->text) - 1;
         x = buf->lines->lens[buf->line_num];
         y = maxy - 7;
-        update_display = 1;
+        update_display = 1;*/
         break;
     default:
         break;
@@ -402,7 +419,7 @@ int meta_commands(int key)
 
     if (update_display)
     {
-        clear();
+        clear();   // replace with erase
         addstr(buf->disp_start);
         move(y, x);
     }
