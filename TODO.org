@@ -1,0 +1,28 @@
+* Headers
+** Split cmacs.h into many headers instead of monolith
+*** This will probably create scope issues that need to be addressed
+*** buffer.h, files.h, etc, etc
+*** add headers into linker
+*** Verify that everything functions as intended
+
+* keybinds
+** Add keybinds files into linker
+** Slowly replace switch statement code with function pointer calls
+** How should we properly index the array
+** How do we handle meta and ctrlx keys?
+*** Do they get separate keytables? probably
+
+* Bottom menu
+** Display current active file
+** Acts as interface for selecting new files for buffering
+
+* Multiple files
+** Implement ctrl+x ctrl+f functionality
+*** SHouldn't be too hard (most of the needed code is already there).
+** Implement ctrl+x b to switch between buffers
+** Implement save all buffers command
+
+* Multi-window system
+** Split screen in half for two buffers
+** How on earth does one do that?
+
