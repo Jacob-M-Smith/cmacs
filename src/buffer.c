@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ncurses.h>
-#include "cmacs.h"
+#include "../inc/cmacs.h"
 
 // Pos is the position where the character should be inserted in the buffer.
 int add_char_to_buffer(char character)
@@ -317,7 +317,7 @@ int ctrl_x_sub_commands(int key)
     switch(key)
     {
     case 's':               // save this file
-        update_file();
+
         break;
     case CTRL('s'):         // save all files (not currently distinct)
         update_file();

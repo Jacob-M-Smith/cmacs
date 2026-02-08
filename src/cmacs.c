@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <ncurses.h>
-#include "cmacs.h"
+#include "../inc/cmacs.h"
 
 int main (int argc, char** argv)
 {
@@ -57,7 +57,7 @@ int main (int argc, char** argv)
         refresh();
     }
 
-    clear();;
+    clear();
     endwin();
     dealloc_all_buffers();
 

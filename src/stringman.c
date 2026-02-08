@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
-#include "cmacs.h"
+#include "../inc/cmacs.h"
 
 // modified strlen that looks for newline instead of null terminator
 // if it hits null terminator first then return -1 (there is no newline)

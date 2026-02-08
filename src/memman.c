@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <ncurses.h>
-#include "cmacs.h"
+#include "../inc/cmacs.h"
 
 // blanket function to catch memory allocation failures
 void mem_panic()

@@ -3,7 +3,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <string.h>
-#include "cmacs.h"
+#include "../inc/cmacs.h"
 
 buffer** buffers;
 uint buffers_size;
@@ -100,7 +100,9 @@ void open_file(char* fname)
     update_line_count();
 }
 
-void update_file(WINDOW* win)
+// TODO: does this need a window parameter 
+//       was present for some reason
+void update_file()
 {
     FILE* fd;
     char* fname = buffers[curr_buffer]->fname;
