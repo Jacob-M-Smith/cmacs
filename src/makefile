@@ -6,6 +6,9 @@ cmacs: cmacs.c
 debug:
 	gcc -g -o cmacs cmacs.c buffer.c files.c keybinds.c stringman.c memman.c -lncurses
 
+test:
+	gcc -o ../test/cmacs cmacs.c buffer.c files.c keybinds.c stringman.c memman.c -lncurses
+
 global:
 	gcc -o /usr/bin/cmacs cmacs.c buffer.c files.c keybinds.c stringman.c memman.c -lncurses
 
