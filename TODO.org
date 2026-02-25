@@ -11,10 +11,20 @@
 ** How should we properly index the array
 ** How do we handle meta and ctrlx keys?
 *** Do they get separate keytables? probably
+** cmacs.c
+*** getch goes directly to process keystroke function
+** buffer.c
+*** process keystroke function should determine if a key is ctrl+, atl+ or ctrl+x to call appropriate keytable
+*** ctrl commands function is dead (as are other modifier functions)
+** keybinds.c
+*** implement modifier key functions
+** ISSUES 
+*** redraw does not get y and x properly after exporting code
 
-* Bottom menu
-** Display current active file
-** Acts as interface for selecting new files for buffering
+* Menu
+** Display current active file (bottom)
+*** Acts as interface for selecting new files for buffering
+** display line numbers
 
 * Multiple files
 ** Implement ctrl+x ctrl+f functionality
